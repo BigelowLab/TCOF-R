@@ -50,3 +50,5 @@ rsconnect/
 
 # macos trash
 .DS_Store
+
+/.quarto/

@@ -5,23 +5,13 @@ format: html
 
 It can be a challenge to face many files to work with.  Often they are scattered across a number of directories, and it can be tempting for a novice to manually read each one.  This is a moment to leverage the fast and relatively easy tools available to you for finding, reading and binding various data sets.
 
+Worse, sometimes files can less than cooperative for new coders by having complicated or non-standard layouts. 
 
+And, of course, invariably we want do handle the contents of the files as *one* object, rather than one object per file.  
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+In this tutorial we walk through some of the techniques available to the coder to simplify the steps to importing multi-file datasets into R (or python!)
 
-## Running Code
+## Mocked data
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+We have prepared a mock up of a dataset.  It consists of studies of guppies from 5 sites. At each site we generate two files: a ["gup" data file](data/guppy/site_01/site_01.gup) and a ["YAML" metadata file](data/guppy/site_01/site_01.yaml).  Each is a text file, but the `.gup` file consists of two parts: a header is a quasi-yaml format followed by the a CSV style table of data. 
 
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this 
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
