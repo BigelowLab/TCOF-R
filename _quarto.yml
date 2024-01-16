@@ -14,7 +14,7 @@ website:
       - href: index.qmd
         text: Home
       - href: many-files.qmd
-        text: E pluribus unum
+        text: "E pluribus unum"
       - about.qmd
 
 format:
