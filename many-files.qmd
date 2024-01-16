@@ -15,3 +15,31 @@ In this tutorial we walk through some of the techniques available to the coder t
 
 We have prepared a mock up of a dataset.  It consists of studies of guppies from 5 sites. At each site we generate two files: a ["gup" data file](data/guppy/site_01/site_01.gup) and a ["YAML" metadata file](data/guppy/site_01/site_01.yaml).  Each is a text file, but the `.gup` file consists of two parts: a header is a quasi-yaml format followed by the a CSV style table of data. 
 
+## Finding files
+
+R-language provides convenient tools for locating files.  If you find these don't suit your needs, then consider using the [fs](https://CRAN.R-project.org/package=fs) R package. For this project, we'll stick to using base R functionality as much as possible.
+
+Here we use the [`list_guppy()` function](functions/guppy.R#L8).  Here's what it finds...
+
+```{r}
+source("setup.R")
+gup_files = list_guppy() |>
+  print()
+```
+
+Let's take a closer look.  The built-in `list.files()` function is the workhorse here.  
+
+```
+list_guppy = function(path = here::here("data", "guppy"),
+                        pattern = glob2rx("*.gup"),
+                        recursive = TRUE){
+  list.files(path, pattern = pattern, recursive= TRUE, full.names = TRUE)
+}
+```
+
+  + `path` this is a string providing the pathway to the data files
+  + `pattern` this is [regular expression](https://en.wikipedia.org/wiki/Regular_expression). We converted a "glob" (wildcard notation) to a "regex" (regular expression) using the handy `glob2rx()` function where we requested the pattern of "any characters followed by '.R' at the very end".
+  + `recursive` tells `list.files()` to search deeply into subdirectories of `path`.
+  + `full.names` results in fully formed filenames including the path.
+  
+  
