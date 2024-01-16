@@ -1,6 +1,7 @@
 ---
 title: "Many files"
-format: html
+execute:
+  cache: false
 ---
 
 It can be a challenge to face many files to work with.  Often they are scattered across a number of directories, and it can be tempting for a novice to manually read each one.  This is a moment to leverage the fast and relatively easy tools available to you for finding, reading and binding various data sets.
