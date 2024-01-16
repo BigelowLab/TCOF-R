@@ -1,0 +1,27 @@
+project:
+  type: website
+  output-dir: docs
+  execute-dir: project
+  render:
+    - index.qmd
+    - many-files.qmd
+website:
+  title: "Using R at the Tandy Center for Ocean Forecasting"
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - href: index.qmd
+        text: Home
+      - href: many-files.qmd
+        text: E pluribus unum
+      - about.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+
