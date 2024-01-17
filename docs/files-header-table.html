@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Using R at the Tandy Center for Ocean Forecasting - Many files</title>
+<title>Coding at the Tandy Center for Ocean Forecasting - Tricky files</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./many-files.html">E pluribus unum</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./files-header-table.html">Files with headers</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -129,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Using R at the Tandy Center for Ocean Forecasting</a> 
+      <a href="./">Coding at the Tandy Center for Ocean Forecasting</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -147,7 +147,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./many-files.html" class="sidebar-item-text sidebar-link active">
+  <a href="./files-header-table.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Files with headers</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./files-many.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">E pluribus unum</span></a>
   </div>
 </li>
@@ -161,8 +167,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#mocked-data" id="toc-mocked-data" class="nav-link active" data-scroll-target="#mocked-data">Mocked data</a></li>
-  <li><a href="#finding-files" id="toc-finding-files" class="nav-link" data-scroll-target="#finding-files">Finding files</a></li>
+  <li><a href="#read-the-table" id="toc-read-the-table" class="nav-link active" data-scroll-target="#read-the-table">Read the table</a></li>
+  <li><a href="#read-the-header" id="toc-read-the-header" class="nav-link" data-scroll-target="#read-the-header">Read the header</a></li>
+  <li><a href="#parse-the-header" id="toc-parse-the-header" class="nav-link" data-scroll-target="#parse-the-header">Parse the header</a></li>
+  <li><a href="#add-as-an-attribute" id="toc-add-as-an-attribute" class="nav-link" data-scroll-target="#add-as-an-attribute">Add as an attribute</a></li>
+  <li><a href="#in-another-context" id="toc-in-another-context" class="nav-link" data-scroll-target="#in-another-context">In another context</a></li>
   </ul>
 </nav>
     </div>
@@ -171,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Many files</h1>
+<h1 class="title">Tricky files</h1>
 </div>
 
 
@@ -188,45 +197,207 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>It can be a challenge to face many files to work with. Often they are scattered across a number of directories, and it can be tempting for a novice to manually read each one. This is a moment to leverage the fast and relatively easy tools available to you for finding, reading and binding various data sets.</p>
-<p>Worse, sometimes files can less than cooperative for new coders by having complicated or non-standard layouts.</p>
-<p>And, of course, invariably we want do handle the contents of the files as <em>one</em> object, rather than one object per file.</p>
-<p>In this tutorial we walk through some of the techniques available to the coder to simplify the steps to importing multi-file datasets into R (or python!)</p>
-<section id="mocked-data" class="level2">
-<h2 class="anchored" data-anchor-id="mocked-data">Mocked data</h2>
-<p>We have prepared a mock up of a dataset. It consists of studies of guppies from 5 sites. At each site we generate two files: a <a href="data/guppy/site_01/site_01.gup">“gup” data file</a> and a <a href="data/guppy/site_01/site_01.yaml">“YAML” metadata file</a>. Each is a text file, but the <code>.gup</code> file consists of two parts: a header is a quasi-yaml format followed by the a CSV style table of data.</p>
-</section>
-<section id="finding-files" class="level2">
-<h2 class="anchored" data-anchor-id="finding-files">Finding files</h2>
-<p>R-language provides convenient tools for locating files. If you find these don’t suit your needs, then consider using the <a href="https://CRAN.R-project.org/package=fs">fs</a> R package. For this project, we’ll stick to using base R functionality as much as possible.</p>
-<p>Here we use the <a href="functions/guppy.R#L8"><code>list_guppy()</code> function</a>. Here’s what it finds…</p>
+<p>Some files are easy to read like CSV or Excel or TEXT files. They provide clean tabular data, often with meaningful column names, and we can generally rely upon existing software to read them for us.</p>
+<p>But not all files. Sometimes you will encounter files that look easy to read but have a funny hitch like a <strong>header section</strong> before the table, or a header section followed by binary table (we are looking at you, flow cytometrists!)</p>
+<p><a href="data/guppy/site_01/site_01.gup">Here</a> we have a file that is simply a small header section followed by a plain old CSV table with 18 records. Here are the first few lines followed by the last 2.</p>
+<pre><code>## Guppy studies
+SITE: site_01
+COORDS (x y crs): 452032.1 4857765.1 EPSG:26919
+TIME: 2020-05-16T07:26:25 UTC
+## data
+id,treatment,count,dose
+1,C,32,0.7
+2,B,71,0.5
+3,D,54,0.6
+4,C,57,0.7
+    .
+    .
+    .
+17,D,37,0.5
+18,E,60,0.8</code></pre>
+<p>Now whe have table readers galore to chose among including <code>read.csv</code> and <code>reader::read_csv</code>. Each includes a <code>skip</code> argument to skip over the header which we can use to read the table alone.</p>
+<section id="read-the-table" class="level3">
+<h3 class="anchored" data-anchor-id="read-the-table">Read the table</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>here() starts at /Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gup_files <span class="ot">=</span> <span class="fu">list_guppy</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"data/guppy/site_01/site_01.gup"</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">show_col_types =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">skip =</span> <span class="dv">5</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_01/site_01.gup"
-[2] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_02/site_02.gup"
-[3] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_03/site_03.gup"
-[4] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_04/site_04.gup"
-[5] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_05/site_05.gup"</code></pre>
+<pre><code>Rows: 18
+Columns: 4
+$ id        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+$ treatment &lt;chr&gt; "C", "B", "D", "C", "C", "A", "B", "B", "A", "B", "B", "A", …
+$ count     &lt;dbl&gt; 32, 71, 54, 57, 32, 55, 66, 61, 60, 33, 67, 34, 42, 60, 49, …
+$ dose      &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 0.9, …</code></pre>
 </div>
 </div>
-<p>Let’s take a closer look. The built-in <code>list.files()</code> function is the workhorse here.</p>
-<pre><code>list_guppy = function(path = here::here("data", "guppy"),
-                        pattern = glob2rx("*.gup"),
-                        recursive = TRUE){
-  list.files(path, pattern = pattern, recursive= TRUE, full.names = TRUE)
-}</code></pre>
-<ul>
-<li><code>path</code> this is a string providing the pathway to the data files</li>
-<li><code>pattern</code> this is <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a>. We converted a “glob” (wildcard notation) to a “regex” (regular expression) using the handy <code>glob2rx()</code> function where we requested the pattern of “any characters followed by ‘.R’ at the very end”.</li>
-<li><code>recursive</code> tells <code>list.files()</code> to search deeply into subdirectories of <code>path</code>.</li>
-<li><code>full.names</code> results in fully formed filenames including the path.</li>
-</ul>
+<p>So that’s pretty easy, but what happens if it is important to attach some of the header info to the table we read? How do we read that and attach it as a attribute to the table?</p>
+</section>
+<section id="read-the-header" class="level3">
+<h3 class="anchored" data-anchor-id="read-the-header">Read the header</h3>
+<p>We could follow a different path by reading the first 5 lines as a character (string) vector and parsing what we need for the text. Then we could use the above to read the remainder of the file as a table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ss <span class="ot">=</span> <span class="fu">readLines</span>(<span class="st">"data/guppy/site_01/site_01.gup"</span>, <span class="at">n =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(stringr<span class="sc">::</span><span class="fu">fixed</span>(<span class="st">": "</span>), <span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ss <span class="ot">=</span> ss[<span class="sc">-</span><span class="dv">1</span>]    <span class="co"># we don't need the first line</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "SITE"    "site_01"
+
+[[2]]
+[1] "COORDS (x y crs)"              "452032.1 4857765.1 EPSG:26919"
+
+[[3]]
+[1] "TIME"                    "2020-05-16T07:26:25 UTC"</code></pre>
+</div>
+</div>
+<p><code>str_split()</code> always produces a list with one element for each line of text.</p>
+</section>
+<section id="parse-the-header" class="level3">
+<h3 class="anchored" data-anchor-id="parse-the-header">Parse the header</h3>
+<p>Now we have a list with one element per line of text, where each element has 2 elements itself: the string before “:” and the string after “:” . Extracting the site is easy,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>site <span class="ot">=</span> ss[[<span class="dv">1</span>]][<span class="dv">2</span>]  <span class="co"># the second element of the first element</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>site</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "site_01"</code></pre>
+</div>
+</div>
+<p>and the time should be a straight forward conversion to a date-time class.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>time <span class="ot">=</span> ss[[<span class="dv">3</span>]][<span class="dv">2</span>] <span class="sc">|&gt;</span>  <span class="co"># the second element of the third element</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.POSIXct</span>(<span class="at">format =</span> <span class="st">"%Y-%m-%dT%H:%M:%S UTC"</span>, <span class="at">tz =</span> <span class="st">"UTC"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2020-05-16 07:26:25 UTC"</code></pre>
+</div>
+</div>
+<p>But what of the second line? It has three bits of info: two numerics (x and y) and one string (crs). Well, first let’s extract them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>                         <span class="co"># the second element of the second element</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>xyc <span class="ot">=</span> stringr<span class="sc">::</span><span class="fu">str_split</span>(ss[[<span class="dv">2</span>]][<span class="dv">2</span>], stringr<span class="sc">::</span><span class="fu">fixed</span>(<span class="st">" "</span>), <span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>xyc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "452032.1"   "4857765.1"  "EPSG:26919"</code></pre>
+</div>
+</div>
+<p>Keep in mind the <code>str_split()</code> returns a list with one element per line of input. So this should be easy to make a list we can subsequently attach to the table as an attribute.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>xcoord <span class="ot">=</span> xyc[[<span class="dv">1</span>]][<span class="dv">1</span>] <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()  <span class="co"># first element of first element</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>ycoord <span class="ot">=</span> xyc[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()  <span class="co"># second element of first element</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>crs <span class="ot">=</span> xyc[[<span class="dv">1</span>]][<span class="dv">3</span>]                     <span class="co"># third element of first element</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="add-as-an-attribute" class="level3">
+<h3 class="anchored" data-anchor-id="add-as-an-attribute">Add as an attribute</h3>
+<p>You can any <em>anything</em> as an attribute to an object using the <code>attr()</code> function. Whether it is a good idea is often worth debating especially if the attibute is large or you need ready access to it. But in the case it is a small bit of info and may not be useful in am immediate sense.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>my_atts <span class="ot">=</span> <span class="fu">list</span>(<span class="at">site_id =</span> site,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">time =</span> time,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">x =</span> xcoord,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> ycoord,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">crs =</span> crs)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(x, <span class="st">"metadata"</span>) <span class="ot">=</span> my_atts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can get all of the attributes (prepare yourself!) using <code>attributes()</code>. Keep in mind that other steps may have added attributes to your table, too.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$row.names
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+
+$names
+[1] "id"        "treatment" "count"     "dose"     
+
+$spec
+cols(
+  id = col_double(),
+  treatment = col_character(),
+  count = col_double(),
+  dose = col_double()
+)
+
+$problems
+&lt;pointer: 0x600000190b10&gt;
+
+$class
+[1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" 
+
+$metadata
+$metadata$site_id
+[1] "site_01"
+
+$metadata$time
+[1] "2020-05-16 07:26:25 UTC"
+
+$metadata$x
+[1] 452032.1
+
+$metadata$y
+[1] 4857765
+
+$metadata$crs
+[1] "EPSG:26919"</code></pre>
+</div>
+</div>
+<p>But, there at the end, you can see your attributes in ‘metadata’. We can get those back if needed.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>my_atts <span class="ot">=</span> <span class="fu">attr</span>(x, <span class="st">"metadata"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>my_atts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$site_id
+[1] "site_01"
+
+$time
+[1] "2020-05-16 07:26:25 UTC"
+
+$x
+[1] 452032.1
+
+$y
+[1] 4857765
+
+$crs
+[1] "EPSG:26919"</code></pre>
+</div>
+</div>
+</section>
+<section id="in-another-context" class="level3">
+<h3 class="anchored" data-anchor-id="in-another-context">In another context</h3>
+<p>In the <a href="./files-many.html">E pluribus unum</a> tutorial we will read these files in a slightly different way, but we use the same approach - read the header as a block of text and then read the remainder as a table. What we do with the header info in that other context is different than here. In that other context we only add the crs as an attribute. <code>site_id</code>, <code>time</code>, <code>x</code> and <code>y</code> are not added as attributes, but instead are added as new variables (columns) in the table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> x <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_id =</span> site,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> time,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> x,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> x, </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.before =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 18
+Columns: 8
+$ site_id   &lt;chr&gt; "site_01", "site_01", "site_01", "site_01", "site_01", "site…
+$ time      &lt;dttm&gt; 2020-05-16 07:26:25, 2020-05-16 07:26:25, 2020-05-16 07:26:…
+$ x         &lt;spc_tbl_[,4]&gt; &lt;spec_tbl_df[18 x 4]&gt;
+$ y         &lt;spc_tbl_[,4]&gt; &lt;spec_tbl_df[18 x 4]&gt;
+$ id        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+$ treatment &lt;chr&gt; "C", "B", "D", "C", "C", "A", "B", "B", "A", "B", "…
+$ count     &lt;dbl&gt; 32, 71, 54, 57, 32, 55, 66, 61, 60, 33, 67, 34, 42,…
+$ dose      &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 0.9, …</code></pre>
+</div>
+</div>
+<p>It’s just a different approach and may seem at this time, like a silly waste of data space since every row has the same values for <code>site_id</code>, <code>time</code>, <code>x</code> and <code>y</code>. But in that other context it is a gold mine.</p>
+<p>)</p>
 
 
 </section>

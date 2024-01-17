@@ -4,16 +4,19 @@ project:
   execute-dir: project
   render:
     - index.qmd
-    - many-files.qmd
+    - files-header-table.qmd
+    - files-many.qmd
 website:
-  title: "Using R at the Tandy Center for Ocean Forecasting"
+  title: "Coding at the Tandy Center for Ocean Forecasting"
   sidebar:
     style: "docked"
     search: true
     contents:
       - href: index.qmd
         text: Home
-      - href: many-files.qmd
+      - href: files-header-table.qmd
+        text: "Files with headers"
+      - href: files-many.qmd
         text: "E pluribus unum"
       - about.qmd
 

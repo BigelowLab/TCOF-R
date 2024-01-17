@@ -1,8 +1,8 @@
 site_id: site_01
-researcher: JPO
-time: 2020-05-16T08:28:36 UTC
-shade: 60.0
+researcher: LDT
+time: 2020-05-16T07:12:26 UTC
+shade: 40.0
 gps_codes:
-- b
-- z
-- k
+- e
+- d
+- q

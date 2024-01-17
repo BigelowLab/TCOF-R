@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Coding at the Tandy Center for Ocean Forecasting - Home</title>
+<title>Coding at the Tandy Center for Ocean Forecasting - Many files</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -80,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Home</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./files-many.html">E pluribus unum</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -107,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
@@ -119,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./files-many.html" class="sidebar-item-text sidebar-link">
+  <a href="./files-many.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">E pluribus unum</span></a>
   </div>
 </li>
@@ -133,7 +167,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#tandy-center-for-ocean-forecasting" id="toc-tandy-center-for-ocean-forecasting" class="nav-link active" data-scroll-target="#tandy-center-for-ocean-forecasting">Tandy Center for Ocean Forecasting</a></li>
+  <li><a href="#mocked-data" id="toc-mocked-data" class="nav-link active" data-scroll-target="#mocked-data">Mocked data</a></li>
+  <li><a href="#finding-files" id="toc-finding-files" class="nav-link" data-scroll-target="#finding-files">Finding files</a></li>
   </ul>
 </nav>
     </div>
@@ -142,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Home</h1>
+<h1 class="title">Many files</h1>
 </div>
 
 
@@ -159,12 +194,44 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="tandy-center-for-ocean-forecasting" class="level1">
-<h1><a href="https://www.bigelow.org/services/ocean-forecasting/">Tandy Center for Ocean Forecasting</a></h1>
-<p>Here you’ll find short tutorials on methods for transforming your coding by leveraging basic tools for capturing, organizing, accessing and analyzing your data. Use the side bar at left to navigate among various topics (some of which overlap.)</p>
+<p>It can be a challenge to face many files to work with. Often they are scattered across a number of directories, and it can be tempting for a novice to manually read each one. This is a moment to leverage the fast and relatively easy tools available to you for finding, reading and binding various data sets.</p>
+<p>Worse, sometimes files can less than cooperative for new coders by having complicated or non-standard layouts.</p>
+<p>And, of course, invariably we want do handle the contents of the files as <em>one</em> object, rather than one object per file.</p>
+<p>In this tutorial we walk through some of the techniques available to the coder to simplify the steps to importing multi-file datasets into R (or python!)</p>
+<section id="mocked-data" class="level2">
+<h2 class="anchored" data-anchor-id="mocked-data">Mocked data</h2>
+<p>We have prepared a mock up of a dataset. It consists of studies of guppies from 5 sites. At each site we generate two files: a <a href="data/guppy/site_01/site_01.gup">“gup” data file</a> and a <a href="data/guppy/site_01/site_01.yaml">“YAML” metadata file</a>. Each is a text file, but the <code>.gup</code> file consists of two parts: a header is a quasi-yaml format followed by the a CSV style table of data.</p>
+</section>
+<section id="finding-files" class="level2">
+<h2 class="anchored" data-anchor-id="finding-files">Finding files</h2>
+<p>R-language provides convenient tools for locating files. If you find these don’t suit your needs, then consider using the <a href="https://CRAN.R-project.org/package=fs">fs</a> R package. For this project, we’ll stick to using base R functionality as much as possible.</p>
+<p>Here we use the <a href="functions/guppy.R#L8"><code>list_guppy()</code> function</a>. Here’s what it finds…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gup_files <span class="ot">=</span> <span class="fu">list_guppy</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_01/site_01.gup"
+[2] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_02/site_02.gup"
+[3] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_03/site_03.gup"
+[4] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_04/site_04.gup"
+[5] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_05/site_05.gup"</code></pre>
+</div>
+</div>
+<p>Let’s take a closer look. The built-in <code>list.files()</code> function is the workhorse here.</p>
+<pre><code>list_guppy = function(path = here::here("data", "guppy"),
+                        pattern = glob2rx("*.gup"),
+                        recursive = TRUE){
+  list.files(path, pattern = pattern, recursive= TRUE, full.names = TRUE)
+}</code></pre>
 <ul>
-<li><p><a href="./files-header-table.html">Tricky files</a> Have a file that has a complicated header with information you want to extract along with the data?</p></li>
-<li><p><a href="./files-many.html">E pluribus unum</a> Have many tabular files you want to bind together as one big table?</p></li>
+<li><code>path</code> this is a string providing the pathway to the data files</li>
+<li><code>pattern</code> this is <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a>. We converted a “glob” (wildcard notation) to a “regex” (regular expression) using the handy <code>glob2rx()</code> function where we requested the pattern of “any characters followed by ‘.R’ at the very end”.</li>
+<li><code>recursive</code> tells <code>list.files()</code> to search deeply into subdirectories of <code>path</code>.</li>
+<li><code>full.names</code> results in fully formed filenames including the path.</li>
 </ul>
 
 

@@ -1,6 +1,6 @@
 # check for installed packages, install those that are missing
 needed = list(
-  CRAN = c("here", "yaml", "sf", "readr", "dplyr")
+  CRAN = c("here", "yaml", "sf", "stringr", "readr", "dplyr")
 )
 installed = rownames(installed.packages())
 need_from_cran = needed$CRAN[!(needed$CRAN %in% installed)]

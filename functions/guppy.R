@@ -36,15 +36,31 @@ read_guppy = function(filename = list_guppy(), form = c("table", "sf")[1]){
   # multiple files?
   if (length(filename) > 1) {
     
-    # read them all as tables, then bind
-    xx = lapply(filename, read_guppy, form  = "table") |>
+    # read them each as table (or sf), then bind
+    x = lapply(filename, read_guppy, form  = form) 
       dplyr::bind_rows()
-    
-    # convert to sf?
-    if (tolower(form[1]) == "sf"){
-      xx = sf::st_as_sf(xx, coords = c("x", "y"), crs = "EPSG:26919")
-    }
-    return(xx)
+   
+    return(x)
+  }
+  
+  # given three lines of text, extract header info
+  # return a list
+  parse_header = function(text = c("SITE: site_01",
+                                   "COORDS (x y crs): 452032.1 4857765.1 EPSG:26919",
+                                   "TIME: 2020-05-16T07:26:25 UTC")){
+    # split each line into 2 pieces
+    ss = stringr::str_split(text, stringr::fixed(":"), n = 2)
+    # the second line has 3 bits x, y and crs
+    s2 = ss[[2]][2] |>                 # " 452032.1 4857765.1 EPSG:26919"
+      stringr::str_squish() |>         # "452032.1 4857765.1 EPSG:26919"
+      stringr::str_split(fixed(" "))   # "452032.1", "4857765.1", "EPSG:26919"
+    list(site = stringr::str_squish(ss[[1]][2]),     # "site_01"
+         x = as.numeric(s2[[1]][1]),                 # 452032.1
+         y = as.numeric(s2[[1]][2]),                 # 4857765.1
+         crs = s2[[1]][3],                           # "EPSG:26919"
+         time = as.POSIXct(stringr::str_squish(ss[[3]][2]), 
+                           format = "%Y-%m-%dT%H:%M:%S UTC", 
+                           tz = "UTC"))
   }
   
   # does it exist?
@@ -61,8 +77,8 @@ read_guppy = function(filename = list_guppy(), form = c("table", "sf")[1]){
   n = length(s)
   # find the locations of lines the start with "#"
   ix = grep("##", s, fixed = TRUE)
-  # read bits from the header (which happens to be YAML format!)
-  hdr = yaml::read_yaml(text = paste(s[(ix[1]+1):(ix[2]-1)], collapse = "\n"))
+  # read bits from the header
+  hdr = parse_header(s[(ix[1]+1):(ix[2]-1)])
   # read the rest as a table
   # then append bits and pieces from the header and the yaml
   x = readr::read_csv(paste(s[(ix[2]+1):n], collapse = "\n"), 
@@ -74,10 +90,14 @@ read_guppy = function(filename = list_guppy(), form = c("table", "sf")[1]){
                   time = hdr$time,
                   researcher = meta$researcher,
                   shade = meta$shade,
-                  gps_codes = paste(meta$codes, collapse = "-"),
+                  gps_codes = paste(meta$gps_codes, collapse = "-"),
                   .before = 1)
+  # attach crs as an attribute
+  attr(x, "crs") <- hdr$crs
+  
+  # does the user want an sf object back?
   if (tolower(form[1]) == 'sf'){
-    x = sf:st_as_as(x, coords = c("x", "y"), crs = "EPSG:26919")
+    x = sf:st_as_as(x, coords = c("x", "y"), crs = attr(x, "crs"))
   }
   return(x)
 }
@@ -152,11 +172,10 @@ generate_guppy = function(n = 1, path = here::here("data", "guppy")){
     
     fileconn = file(gup_files[i], open = 'wt')
     cat("## Guppy studies\n", file = fileconn)
-    list(site_id = site_ids[i],
-         x_coord = xy$X[i],
-         y_coord = xy$Y[i],
-         time = times[i]) |>
-      yaml::write_yaml(fileconn)
+    cat(sprintf("SITE: %s\n", site_ids[i]), file = fileconn)
+    cat(sprintf("COORDS (x y crs): %0.1f %0.1f %s\n", xy$X[i], xy$Y[i], "EPSG:26919"),
+        file = fileconn)
+    cat(sprintf("TIME: %s\n", times[i]), file = fileconn)
     cat("## data\n", file = fileconn)
     close(fileconn)
     tbl = dplyr::tibble(id = seq_len(N[i]),

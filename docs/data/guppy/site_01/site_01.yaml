@@ -1,8 +1,8 @@
 site_id: site_01
-researcher: NLS
-time: 2020-05-16T08:02:23 UTC
-shade: 60.0
+researcher: JPO
+time: 2020-05-16T07:26:25 UTC
+shade: 30.0
 gps_codes:
 - c
-- p
-- h
+- q
+- q

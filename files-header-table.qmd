@@ -1,0 +1,131 @@
+---
+title: "Tricky files"
+---
+
+Some files are easy to read like CSV or Excel or TEXT files.  They provide clean tabular data, often with meaningful column names, and we can generally rely upon existing software to read them for us.  
+
+But not all files.  Sometimes you will encounter files that look easy to read but have a funny hitch like a **header section** before the table, or a header section followed by binary table (we are looking at you, flow cytometrists!)
+
+[Here](data/guppy/site_01/site_01.gup) we have a file that is simply a small header section followed by a plain old CSV table with 18 records. Here are the first few lines followed by the last 2.
+
+```
+## Guppy studies
+SITE: site_01
+COORDS (x y crs): 452032.1 4857765.1 EPSG:26919
+TIME: 2020-05-16T07:26:25 UTC
+## data
+id,treatment,count,dose
+1,C,32,0.7
+2,B,71,0.5
+3,D,54,0.6
+4,C,57,0.7
+    .
+    .
+    .
+17,D,37,0.5
+18,E,60,0.8
+```
+
+Now whe have table readers galore to chose among including `read.csv` and `reader::read_csv`.  Each includes a `skip` argument to skip over the header which we can use to read the table alone.
+
+### Read the table
+
+```{r}
+source("setup.R")
+x = readr::read_csv("data/guppy/site_01/site_01.gup",
+                    show_col_types = FALSE,
+                    skip = 5,
+                    col_names = TRUE) |>
+  dplyr::glimpse()
+```
+
+So that's pretty easy, but what happens if it is important to attach some of the header info to the table we read?  How do we read that and attach it as a attribute to the table?
+
+### Read the header
+
+We could follow a different path by reading the first 5 lines as a character (string) vector and parsing what we need for the text.  Then we could use the above to read the remainder of the file as a table.
+
+```{r}
+ss = readLines("data/guppy/site_01/site_01.gup", n = 4) |>
+  stringr::str_split(stringr::fixed(": "), n = 2)
+ss = ss[-1]    # we don't need the first line
+ss
+```
+
+`str_split()` always produces a list with one element for each line of text.
+
+### Parse the header
+
+Now we have a list with one element per line of text, where each element has 2 elements itself: the string before ": " and the string after ":" .  Extracting the site is easy,
+
+```{r}
+site = ss[[1]][2]  # the second element of the first element
+site
+```
+and the time should be a straight forward conversion to a date-time class.  
+
+```{r}
+time = ss[[3]][2] |>  # the second element of the third element
+  as.POSIXct(format = "%Y-%m-%dT%H:%M:%S UTC", tz = "UTC")
+time
+```
+
+But what of the second line?  It has three bits of info: two numerics (x and y) and one string (crs). Well, first let's extract them.
+
+```{r}
+                         # the second element of the second element
+xyc = stringr::str_split(ss[[2]][2], stringr::fixed(" "), n = 3)
+xyc
+```
+
+Keep in mind the `str_split()` returns a list with one element per line of input. So this should be easy to make a list we can subsequently attach to the table as an attribute.
+
+```{r}
+
+xcoord = xyc[[1]][1] |> as.numeric()  # first element of first element
+ycoord = xyc[[1]][2] |> as.numeric()  # second element of first element
+crs = xyc[[1]][3]                     # third element of first element
+```
+
+### Add as an attribute
+
+You can any *anything* as an attribute to an object using the `attr()` function.  Whether it is a good idea is often worth debating especially if the attibute is large or you need ready access to it.  But in the case it is a small bit of info and may not be useful in am immediate sense.
+
+```{r}
+my_atts = list(site_id = site,
+               time = time,
+               x = xcoord,
+               y = ycoord,
+               crs = crs)
+
+attr(x, "metadata") = my_atts
+```
+
+You can get all of the attributes (prepare yourself!) using `attributes()`. Keep in mind that other steps may have added attributes to your table, too.  
+
+```{r}
+attributes(x)
+```
+But, there at the end, you can see your attributes in 'metadata'.  We can get those back if needed.
+
+```{r}
+my_atts = attr(x, "metadata")
+my_atts
+```
+### In another context
+
+In the [E pluribus unum](files-many.qmd) tutorial we will read these files in a slightly different way, but we use the same approach - read the header as a block of text and then read the remainder as a table.  What we do with the header info in that other context is different than here.  In that other context we only add the crs as an attribute. `site_id`, `time`, `x` and `y` are not added as attributes, but instead are added as new variables (columns) in the table.
+
+```{r}
+x = x |>
+  dplyr::mutate(
+    site_id = site,
+    time = time,
+    x = x,
+    y = x, 
+    .before = 1) |>
+  dplyr::glimpse()
+```
+It's just a different approach and may seem at this time, like a silly waste of data space since every row has the same values for `site_id`, `time`, `x` and `y`.  But in that other context it is a gold mine.
+
+  )
