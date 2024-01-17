@@ -126,6 +126,4 @@ x = x |>
     .before = 1) |>
   dplyr::glimpse()
 ```
-It's just a different approach and may seem at this time, like a silly waste of data space since every row has the same values for `site_id`, `time`, `x` and `y`.  But in that other context it is a gold mine.
-
-  )
+It's just a different approach and may seem, at this time, like a silly waste of data space since every row has the same values for `site_id`, `time`, `x` and `y`.  But in that other context it is a gold mine.
