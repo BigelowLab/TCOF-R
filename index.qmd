@@ -8,7 +8,7 @@ execute:
 
 Here you'll find short tutorials on methods for transforming your coding by leveraging basic tools for capturing, organizing, accessing and analyzing your data. Use the side bar at left to navigate among various topics (some of which overlap.)  
 
-+ [Tricky files](files-header-table.qmd) Have a file that has a complicated header with information you want to extract along with the data?
++ [Files with heeaders](files-header-table.qmd) Have a file that has a complicated header with information you want to extract along with the data?
 
 + [E pluribus unum](files-many.qmd) Have many tabular files you want to bind together as one big table?
 

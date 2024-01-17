@@ -43,7 +43,7 @@ So that's pretty easy, but what happens if it is important to attach some of the
 
 ### Read the header
 
-We could follow a different path by reading the first 5 lines as a character (string) vector and parsing what we need for the text.  Then we could use the above to read the remainder of the file as a table.
+We could follow a different path by reading the first 4 lines as a character (string) vector and parsing what we need for the text.  Then we could use the above to read the remainder of the file as a table.
 
 ```{r}
 ss = readLines("data/guppy/site_01/site_01.gup", n = 4) |>
@@ -121,8 +121,8 @@ x = x |>
   dplyr::mutate(
     site_id = site,
     time = time,
-    x = x,
-    y = x, 
+    x = xcoord,
+    y = ycoord, 
     .before = 1) |>
   dplyr::glimpse()
 ```

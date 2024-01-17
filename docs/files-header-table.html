@@ -241,7 +241,7 @@ $ dose      &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 0
 </section>
 <section id="read-the-header" class="level3">
 <h3 class="anchored" data-anchor-id="read-the-header">Read the header</h3>
-<p>We could follow a different path by reading the first 5 lines as a character (string) vector and parsing what we need for the text. Then we could use the above to read the remainder of the file as a table.</p>
+<p>We could follow a different path by reading the first 4 lines as a character (string) vector and parsing what we need for the text. Then we could use the above to read the remainder of the file as a table.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ss <span class="ot">=</span> <span class="fu">readLines</span>(<span class="st">"data/guppy/site_01/site_01.gup"</span>, <span class="at">n =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(stringr<span class="sc">::</span><span class="fu">fixed</span>(<span class="st">": "</span>), <span class="at">n =</span> <span class="dv">2</span>)</span>
@@ -327,7 +327,7 @@ cols(
 )
 
 $problems
-&lt;pointer: 0x600000190b10&gt;
+&lt;pointer: 0x600002c36590&gt;
 
 $class
 [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" 
@@ -379,8 +379,8 @@ $crs
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_id =</span> site,</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> time,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> x,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> x, </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> xcoord,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> ycoord, </span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.before =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -388,11 +388,11 @@ $crs
 Columns: 8
 $ site_id   &lt;chr&gt; "site_01", "site_01", "site_01", "site_01", "site_01", "site…
 $ time      &lt;dttm&gt; 2020-05-16 07:26:25, 2020-05-16 07:26:25, 2020-05-16 07:26:…
-$ x         &lt;spc_tbl_[,4]&gt; &lt;spec_tbl_df[18 x 4]&gt;
-$ y         &lt;spc_tbl_[,4]&gt; &lt;spec_tbl_df[18 x 4]&gt;
+$ x         &lt;dbl&gt; 452032.1, 452032.1, 452032.1, 452032.1, 452032.1, 452032.1, …
+$ y         &lt;dbl&gt; 4857765, 4857765, 4857765, 4857765, 4857765, 4857765, 485776…
 $ id        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
-$ treatment &lt;chr&gt; "C", "B", "D", "C", "C", "A", "B", "B", "A", "B", "…
-$ count     &lt;dbl&gt; 32, 71, 54, 57, 32, 55, 66, 61, 60, 33, 67, 34, 42,…
+$ treatment &lt;chr&gt; "C", "B", "D", "C", "C", "A", "B", "B", "A", "B", "B", "A", …
+$ count     &lt;dbl&gt; 32, 71, 54, 57, 32, 55, 66, 61, 60, 33, 67, 34, 42, 60, 49, …
 $ dose      &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 0.9, …</code></pre>
 </div>
 </div>
