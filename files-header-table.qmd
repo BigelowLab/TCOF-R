@@ -89,7 +89,7 @@ crs = xyc[[1]][3]                     # third element of first element
 
 ### Add as an attribute
 
-You can any *anything* as an attribute to an object using the `attr()` function.  Whether it is a good idea is often worth debating especially if the attibute is large or you need ready access to it.  But in the case it is a small bit of info and may not be useful in am immediate sense.
+You can have *anything* as an attribute to an object using the `attr()` function. Attributes are small bits of metadata associated with the object to which it is attached.  Whether it is a good idea add an attribute is often worth debating especially if the attribute is large or you need ready access to it.  But in the case it is a small bit of info and may not be useful in an immediate sense.  Below we attach a "metadata" attribute to our table, `x`.
 
 ```{r}
 my_atts = list(site_id = site,
@@ -101,7 +101,7 @@ my_atts = list(site_id = site,
 attr(x, "metadata") = my_atts
 ```
 
-You can get all of the attributes (prepare yourself!) using `attributes()`. Keep in mind that other steps may have added attributes to your table, too.  
+You can get all of the attributes (prepare yourself - it can be a lot!) using `attributes()`. Keep in mind that other steps may have added attributes to your table, too.  
 
 ```{r}
 attributes(x)

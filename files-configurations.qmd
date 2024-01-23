@@ -1,0 +1,67 @@
+---
+title: "Configuration files"
+---
+
+Many times we have a set of values used by a workflow that aren't exactly data, but are values for parameters and arguments. These are typically stored in a [configuration file](https://en.wikipedia.org/wiki/Configuration_file) which can come in a variety of standard formats. A common format is [YAML](https://en.wikipedia.org/wiki/YAML) which is a name-value pairing written in plain text, and it is easy work with in R.
+
+## An example configuration file
+
+[Here](data/guppy/site_01/site_01.yaml) we have a small configuration file. It looks like this:
+
+```         
+site_id: site_01
+researcher: JPO
+time: 2020-05-16T07:26:25 UTC
+shade: 30.0
+gps_codes:
+- c
+- q
+- q
+```
+
+Most items have a simple name-value association such as `shade = 30.0`, while others have more complex associations like `gps_codes = c("c", "q", "q")`.
+
+## Reading a configuration file
+The [yaml R package](https://CRAN.R-project.org/package=yaml) will read and write YAML files.  In R the contents of the file become a named list.
+
+```{r}
+cfg = yaml::read_yaml("data/guppy/site_01/site_01.yaml") 
+str(cfg)
+```
+
+Note that items have been read as charcater (string) or number.  Other data types are possibke but these two are the most common.
+
+## Modifying a configuration
+
+You can update a value in the configuration. The following are all equivalent modifications.
+
+```{r}
+cfg$shade = 25.0
+cfg[["shade"]] = 25.0
+cfg[[4]] = 25.0
+```
+
+You can add a name-value pairing.
+
+```{r}
+cfg$alphabet = letters[1:5]
+str(cfg)
+```
+And then you can remove an element.
+
+```{r}
+cfg$time = NULL
+str(cfg)
+```
+
+## Writing a configuration file
+
+To write the configuration we can use the [yaml R package](https://CRAN.R-project.org/package=yaml) again.
+
+```{r}
+yaml::write_yaml(cfg, "~/my_test_config.yaml")
+```
+
+:::{.callout-tip}
+The easiest way to get a configuration going is to start a *named* list in R for your important items, and then save that to a YAML file.  You can edit it as a text file to modify, add or remove elements.
+:::

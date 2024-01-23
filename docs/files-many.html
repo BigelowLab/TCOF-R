@@ -147,8 +147,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./files-configurations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configuration files</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./files-header-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Files with headers</span></a>
+ <span class="menu-text">Files with bad headers</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -168,7 +174,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#mocked-data" id="toc-mocked-data" class="nav-link active" data-scroll-target="#mocked-data">Mocked data</a></li>
-  <li><a href="#finding-files" id="toc-finding-files" class="nav-link" data-scroll-target="#finding-files">Finding files</a></li>
+  <li><a href="#finding-files" id="toc-finding-files" class="nav-link" data-scroll-target="#finding-files">Finding files</a>
+  <ul class="collapse">
+  <li><a href="#reading-the-files" id="toc-reading-the-files" class="nav-link" data-scroll-target="#reading-the-files">Reading the files</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -194,17 +203,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>It can be a challenge to face many files to work with. Often they are scattered across a number of directories, and it can be tempting for a novice to manually read each one. This is a moment to leverage the fast and relatively easy tools available to you for finding, reading and binding various data sets.</p>
-<p>Worse, sometimes files can less than cooperative for new coders by having complicated or non-standard layouts.</p>
-<p>And, of course, invariably we want do handle the contents of the files as <em>one</em> object, rather than one object per file.</p>
+<p>It can be a challenge to face many files to work with. Often they are scattered across a number of directories, and it can be tempting for a novice to manually read each one in a script, and then try to bind them together. Even worse, sometimes files can less than cooperative for new coders by having complicated or non-standard layouts.</p>
+<p>And, of course, invariably we want do handle the contents of the many files as <em>one</em> object, rather than many objects with one object per file.</p>
 <p>In this tutorial we walk through some of the techniques available to the coder to simplify the steps to importing multi-file datasets into R (or python!)</p>
 <section id="mocked-data" class="level2">
 <h2 class="anchored" data-anchor-id="mocked-data">Mocked data</h2>
-<p>We have prepared a mock up of a dataset. It consists of studies of guppies from 5 sites. At each site we generate two files: a <a href="data/guppy/site_01/site_01.gup">“gup” data file</a> and a <a href="data/guppy/site_01/site_01.yaml">“YAML” metadata file</a>. Each is a text file, but the <code>.gup</code> file consists of two parts: a header is a quasi-yaml format followed by the a CSV style table of data.</p>
+<p>We have prepared a mock up of a dataset; it consists of studies of guppies from 5 sites. At each site we generate two files: a <a href="data/guppy/site_01/site_01.gup">“gup” data file</a> and a <a href="data/guppy/site_01/site_01.yaml">“YAML” metadata file</a>. Each is a text file, but the <code>.gup</code> file consists of two parts: a header followed by the a CSV style table of data.</p>
 </section>
 <section id="finding-files" class="level2">
 <h2 class="anchored" data-anchor-id="finding-files">Finding files</h2>
-<p>R-language provides convenient tools for locating files. If you find these don’t suit your needs, then consider using the <a href="https://CRAN.R-project.org/package=fs">fs</a> R package. For this project, we’ll stick to using base R functionality as much as possible.</p>
+<p>R-language provides convenient tools for locating files. If you find these don’t suit your needs, then consider using the <a href="https://CRAN.R-project.org/package=fs">fs</a> R package which has more features. For this project, we’ll stick to using base R functionality as much as possible.</p>
 <p>Here we use the <a href="functions/guppy.R#L8"><code>list_guppy()</code> function</a>. Here’s what it finds…</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -221,20 +229,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [5] "/Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R/data/guppy/site_05/site_05.gup"</code></pre>
 </div>
 </div>
-<p>Let’s take a closer look. The built-in <code>list.files()</code> function is the workhorse here.</p>
-<pre><code>list_guppy = function(path = here::here("data", "guppy"),
-                        pattern = glob2rx("*.gup"),
-                        recursive = TRUE){
-  list.files(path, pattern = pattern, recursive= TRUE, full.names = TRUE)
-}</code></pre>
+<p>Let’s take a closer look at the function. The built-in <code>list.files()</code> function is the workhorse here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>list_guppy <span class="ot">=</span> <span class="cf">function</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"guppy"</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pattern =</span> <span class="fu">glob2rx</span>(<span class="st">"*.gup"</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">recursive =</span> <span class="cn">TRUE</span>){</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(path, <span class="at">pattern =</span> pattern, <span class="at">recursive=</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function accepts three arguments:</p>
 <ul>
 <li><code>path</code> this is a string providing the pathway to the data files</li>
 <li><code>pattern</code> this is <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a>. We converted a “glob” (wildcard notation) to a “regex” (regular expression) using the handy <code>glob2rx()</code> function where we requested the pattern of “any characters followed by ‘.R’ at the very end”.</li>
 <li><code>recursive</code> tells <code>list.files()</code> to search deeply into subdirectories of <code>path</code>.</li>
-<li><code>full.names</code> results in fully formed filenames including the path.</li>
+<li><code>full.names</code> results in fully-formed filenames including the path.</li>
 </ul>
+<section id="reading-the-files" class="level3">
+<h3 class="anchored" data-anchor-id="reading-the-files">Reading the files</h3>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -4,6 +4,7 @@ project:
   execute-dir: project
   render:
     - index.qmd
+    - files-configurations.qmd
     - files-header-table.qmd
     - files-many.qmd
 website:
@@ -14,8 +15,10 @@ website:
     contents:
       - href: index.qmd
         text: Home
+      - href: files-configurations.qmd
+        text: "Configuration files"
       - href: files-header-table.qmd
-        text: "Files with headers"
+        text: "Files with bad headers"
       - href: files-many.qmd
         text: "E pluribus unum"
       - about.qmd
