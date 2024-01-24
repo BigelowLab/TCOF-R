@@ -147,6 +147,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./iterations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./files-configurations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Configuration files</span></a>
   </div>
@@ -206,21 +212,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Some files are easy to read like CSV or Excel or TEXT files. They provide clean tabular data, often with meaningful column names, and we can generally rely upon existing software to read them for us.</p>
 <p>But not all files. Sometimes you will encounter files that look easy to read but have a funny hitch like a <strong>header section</strong> before the table, or a header section followed by binary table (we are looking at you, flow cytometrists!)</p>
 <p><a href="data/guppy/site_01/site_01.gup">Here</a> we have a file that is simply a small header section followed by a plain old CSV table with 18 records. Here are the first few lines followed by the last 2.</p>
-<pre><code>## Guppy studies
-SITE: site_01
-COORDS (x y crs): 452032.1 4857765.1 EPSG:26919
-TIME: 2020-05-16T07:26:25 UTC
-## data
-id,treatment,count,dose
-1,C,32,0.7
-2,B,71,0.5
-3,D,54,0.6
-4,C,57,0.7
-    .
-    .
-    .
-17,D,37,0.5
-18,E,60,0.8</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>## Guppy studies</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>SITE: site_01</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>COORDS (x y crs): 452032.1 4857765.1 EPSG:26919</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>TIME: 2020-05-16T07:26:25 UTC</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>## data</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>id,treatment,count,dose</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>1,C,32,0.7</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>2,B,71,0.5</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>3,D,54,0.6</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>4,C,57,0.7</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    .</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    .</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    .</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>17,D,37,0.5</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>18,E,60,0.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now we have table readers galore to chose among including <code>read.csv</code> and <code>reader::read_csv</code>. Each includes a <code>skip</code> argument to skip over the header which we can use to read the table alone.</p>
 <section id="read-the-table" class="level3">
 <h3 class="anchored" data-anchor-id="read-the-table">Read the table</h3>
@@ -333,7 +339,7 @@ cols(
 )
 
 $problems
-&lt;pointer: 0x7fe0fdc0d740&gt;
+&lt;pointer: 0x7f919e2f4f70&gt;
 
 $class
 [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" 

@@ -8,7 +8,7 @@ But not all files.  Sometimes you will encounter files that look easy to read bu
 
 [Here](data/guppy/site_01/site_01.gup) we have a file that is simply a small header section followed by a plain old CSV table with 18 records. Here are the first few lines followed by the last 2.
 
-```
+```default
 ## Guppy studies
 SITE: site_01
 COORDS (x y crs): 452032.1 4857765.1 EPSG:26919
@@ -81,7 +81,6 @@ xyc
 Keep in mind the `str_split()` returns a list with one element per line of input. So this should be easy to make a list we can subsequently attach to the table as an attribute.
 
 ```{r}
-
 xcoord = xyc[[1]][1] |> as.numeric()  # first element of first element
 ycoord = xyc[[1]][2] |> as.numeric()  # second element of first element
 crs = xyc[[1]][3]                     # third element of first element

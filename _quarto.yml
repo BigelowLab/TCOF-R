@@ -4,6 +4,7 @@ project:
   execute-dir: project
   render:
     - index.qmd
+    - iterations.qmd
     - files-configurations.qmd
     - files-header-table.qmd
     - files-many.qmd
@@ -15,6 +16,8 @@ website:
     contents:
       - href: index.qmd
         text: Home
+      - href: iterations.qmd
+        text: "Iterations"
       - href: files-configurations.qmd
         text: "Configuration files"
       - href: files-header-table.qmd

@@ -147,6 +147,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./iterations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./files-configurations.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Configuration files</span></a>
   </div>
@@ -206,14 +212,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="an-example-configuration-file" class="level2">
 <h2 class="anchored" data-anchor-id="an-example-configuration-file">An example configuration file</h2>
 <p><a href="data/guppy/site_01/site_01.yaml">Here</a> we have a small configuration file. It looks like this:</p>
-<pre><code>site_id: site_01
-researcher: JPO
-time: 2020-05-16T07:26:25 UTC
-shade: 30.0
-gps_codes:
-- c
-- q
-- q</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>site_id: site_01</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>researcher: JPO</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>time: 2020-05-16T07:26:25 UTC</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>shade: 30.0</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gps_codes:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>- c</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>- q</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>- q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Most items have a simple name-value association such as <code>shade = 30.0</code>, while others have more complex associations like <code>gps_codes = c("c", "q", "q")</code>.</p>
 </section>
 <section id="reading-a-configuration-file" class="level2">

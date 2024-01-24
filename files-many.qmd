@@ -78,7 +78,7 @@ The process is the same if you provide one filename or many filenames.  We have 
 where each commetn is flagged with a double hash `##`.  You can study the code alongside the 
 comments to follow along.
 
-```
+```default
 for each filename
   check that the file at filename exists
   use string processing to "make" the companion medatdata filename

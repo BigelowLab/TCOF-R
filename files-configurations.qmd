@@ -8,7 +8,7 @@ Many times we have a set of values used by a workflow that aren't exactly data, 
 
 [Here](data/guppy/site_01/site_01.yaml) we have a small configuration file. It looks like this:
 
-```         
+```default         
 site_id: site_01
 researcher: JPO
 time: 2020-05-16T07:26:25 UTC

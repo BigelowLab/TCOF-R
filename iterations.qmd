@@ -1,0 +1,90 @@
+---
+title: "Iterations"
+format: html
+---
+
+Iteration - just what the heck is it really?  The word comes from the Latin 'iterare' which means to repeat. Computer programs are perfect for doing repetitious things which releases the coder from mundane tasks so we can spend more time checking the internet. But they do have an initial cost - somebody has to code up the iteration.  That's what this tutorial is about - how to code up iterations.
+
+The most famous iteration framework is the **for-loop**, but it has cousins in the **repeat-until** and **while-do** constructs.  R-language has additional tools built in for iterating.  These are the **apply** family including `lappy`, `sapply`, `mapply`, `rapply` and `vapply`.  Third party packages, such as those from [Tidyverse](https://www.tidyverse.org/) and [data.table](https://rdatatable.gitlab.io/data.table/). 
+
+## The for-loop
+
+The for-loop has a very simple design...
+
+```default
+for (each of these-things){
+  do this
+}
+```
+
+Technically, we don't need to add the curly-braced code block, it could be simply...
+
+```default
+for (each of these-things) do this
+```
+
+... but it is always better to err on the side of readability - and a code block is simply easier to read.  
+
+### Some example data
+
+Let's make a simple named vector to work with.
+
+```{r}
+x = c(A = "Alan", B = "Beryl", C = "Carlos")
+```
+
+### How to iterate over `these-things`
+
+What goes into the `(each of these-things)`? You have three choices here: a positional index (1,2,3), a name (A, B C) or the items itself.  Each time the loop runs, it selects one item from your `these-things` and "delivers" it into the code block.  
+
+#### Iterate by position
+
+Here's an example using positional indices.  Note that we chose to use `seq_along(x)` to generate our sequence: `r seq_along(x)`.  Using `seq_along(x)` and `seq_len(length(x))` are considered good practice because they will **not** throw an error if you happen to have an `x` with no elements (it happens!) and instead will skip the loop.
+
+```{r}
+for (i in seq_along(x)){
+  cat("Hello,", x[i], "you are number", i, "\n")
+}
+```
+
+Using positional indices is often very useful, but keep in mind you can control the order of the sequence if you like.  Note here how we reverse the order.
+
+```{r}
+for (i in rev(seq_along(x))){
+  cat("Hello,", x[i], "you are number", i, "\n")
+}
+```
+
+#### Iterate by name
+
+Of course our object with three elements is a named vector.  So we could use the names to iterate.
+
+```{r}
+for (name in names(x)){
+  cat("Your name is", x[[name]], "and your letter is", name, "\n")
+}
+```
+
+Here, too, you may arrange the order as you please.
+```{r}
+for (name in c("B", "A", "C")){
+  cat("Your name is", x[[name]], "and your letter is", name, "\n")
+}
+```
+
+:::{.callout-warning}
+Is your vector or list unnamed?  What do you think will happen if you try to iterate by name?  WIll it throw an error?  Or skip the loop?
+:::
+
+
+#### Iterate by item
+
+Finally, we can iterate by item instead of by position or name.
+
+```{r}
+for (this_person in x){
+  cat("Hi there,", this_person, "I don't know your letter or position\n")
+}
+```
+
+Note that iterating by item means we lose the context of order - we don't know in the code block anything about where in `x` we come from.  Often it doesn't matter.
