@@ -18,11 +18,13 @@ list_guppy = function(path = here::here("data", "guppy"),
 #' @return list of metadata
 read_meta = function(filename){
   
-  # does it exist?
+  # check that the metadata file exists
   if (!file.exists(filename)){
     stop("file not found:", filename)
   }
   
+  ## read the metadata as a YAML file
+  ## return the metadata
   yaml::read_yaml(filename)
 }
 
@@ -33,18 +35,9 @@ read_meta = function(filename){
 #' @return table or sf POINT table
 read_guppy = function(filename = list_guppy(), form = c("table", "sf")[1]){
   
-  # multiple files?
-  if (length(filename) > 1) {
-    
-    # read them each as table (or sf), then bind
-    x = lapply(filename, read_guppy, form  = form) 
-      dplyr::bind_rows()
-   
-    return(x)
-  }
-  
   # given three lines of text, extract header info
-  # return a list
+  # @param text a three element character string
+  # @return a list
   parse_header = function(text = c("SITE: site_01",
                                    "COORDS (x y crs): 452032.1 4857765.1 EPSG:26919",
                                    "TIME: 2020-05-16T07:26:25 UTC")){
@@ -63,42 +56,67 @@ read_guppy = function(filename = list_guppy(), form = c("table", "sf")[1]){
                            tz = "UTC"))
   }
   
-  # does it exist?
-  if (!file.exists(filename)){
-    stop("file not found:", filename)
+  
+  # A function to read just one guppy file (and it's metadata)
+  # @param f a single filename
+  # @return a tibble
+  read_guppy_one = function(f){
+    
+    ## check that the file at filename exists
+    if (!file.exists(f)){
+      stop("file not found:", f)
+    }
+    
+    ## use string processing to "make" the companion medatdata filename
+    meta_file = sub(".gup", ".yaml", f, fixed = TRUE)
+    ## read the metadata
+    meta = read_meta(meta_file)
+    
+    ## scan all of the text lines in the filename
+    s = readLines(f)
+    n = length(s)
+    # find the locations of lines the start with "#"
+    ix = grep("##", s, fixed = TRUE)
+    # read bits from the header from the line after the first ## to the line 
+    # before the next ##
+    ## parse the header extracting the bits of info we want
+    hdr = parse_header(s[(ix[1]+1):(ix[2]-1)])
+    ## read the table directly from the text
+    ## mutate the the table to include columns of data from the metadata and the header
+    x = readr::read_csv(paste(s[(ix[2]+1):n], collapse = "\n"), 
+                        col_names = TRUE,
+                        show_col_types = FALSE) |>
+      dplyr::mutate(site_id = hdr$site, 
+                    x = hdr$x,
+                    y = hdr$y,
+                    time = hdr$time,
+                    researcher = meta$researcher,
+                    shade = meta$shade,
+                    gps_codes = paste(meta$gps_codes, collapse = "-"),
+                    .before = 1)
+    ## add the crs info as an attribute
+    ## return the table
+    attr(x, "crs") <- hdr$crs
+    return(x)
   }
   
-  # read metadat
-  meta_file = sub(".gup", ".yaml", filename, fixed = TRUE)
-  meta = read_meta(meta_file)
-  
-  # read all the lines of text 
-  s = readLines(filename)
-  n = length(s)
-  # find the locations of lines the start with "#"
-  ix = grep("##", s, fixed = TRUE)
-  # read bits from the header
-  hdr = parse_header(s[(ix[1]+1):(ix[2]-1)])
-  # read the rest as a table
-  # then append bits and pieces from the header and the yaml
-  x = readr::read_csv(paste(s[(ix[2]+1):n], collapse = "\n"), 
-                      col_names = TRUE,
-                      show_col_types = FALSE) |>
-    dplyr::mutate(site_id = hdr$site_id, 
-                  x = hdr$x_coord,
-                  y = hdr$y_coord,
-                  time = hdr$time,
-                  researcher = meta$researcher,
-                  shade = meta$shade,
-                  gps_codes = paste(meta$gps_codes, collapse = "-"),
-                  .before = 1)
-  # attach crs as an attribute
-  attr(x, "crs") <- hdr$crs
-  
-  # does the user want an sf object back?
-  if (tolower(form[1]) == 'sf'){
-    x = sf:st_as_as(x, coords = c("x", "y"), crs = attr(x, "crs"))
+  # read them all into a list (even if just one filename!)
+  ## "for each filename"
+  x = lapply(filename, read_guppy_one)
+  # excavate the crs from the first 
+  crs = attr(x[[1]], "crs")
+  ## bind all of the tables by row
+  x = dplyr::bind_rows(x)
+
+  ## convert to sf-object if the user so requests
+  if (tolower(form[1]) == "sf"){
+    # bind and transform into sf POINT
+    x = dplyr::bind_rows(x) |>
+      sf::st_as_sf(coords = c("x", "y"), crs = crs)
+  } else {
+    attr(x, "crs") = crs
   }
+  ## return the table/sf-object
   return(x)
 }
 

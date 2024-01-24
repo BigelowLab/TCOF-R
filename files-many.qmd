@@ -12,7 +12,7 @@ In this tutorial we walk through some of the techniques available to the coder t
 
 ## Mocked data
 
-We have prepared a mock up of a dataset; it consists of studies of guppies from 5 sites. At each site we generate two files: a ["gup" data file](data/guppy/site_01/site_01.gup) and a ["YAML" metadata file](data/guppy/site_01/site_01.yaml). Each is a text file, but the `.gup` file consists of two parts: a header followed by the a CSV style table of data.
+We have prepared a mock up of a dataset; it consists of studies of guppies from 5 sites. At each site we generate two files: a ["gup" data file](data/guppy/site_01/site_01.gup) and a ["YAML" configuration file](data/guppy/site_01/site_01.yaml). Each is a text file, but the `.gup` file consists of two parts: a header followed by the a CSV style table of data.
 
 ## Finding files
 
@@ -26,6 +26,7 @@ gup_files = list_guppy() |>
   print()
 ```
 
+### A closer look at thr function
 Let's take a closer look at the function. The built-in `list.files()` function is the workhorse here.
 
 ```{r}         
@@ -42,4 +43,64 @@ The function accepts three arguments:
 -   `recursive` tells `list.files()` to search deeply into subdirectories of `path`.
 -   `full.names` results in fully-formed filenames including the path.
 
-### Reading the files
+## Reading the files
+
+We have already written a convenience function, [`read_guppy()`](functions/guppy.R#36), which reads both the [configuration file](files-configurations.qmd) and the ["gup" data file](files-header-table.qmd) files, and then merges them into one file.
+
+### Basic use
+
+We pass in the listing of 5 filenames, and the function returns a single table
+```{r}
+x = read_guppy(gup_files) |>
+  glimpse()
+```
+Let's double check that the number of sites matches the number of files.
+
+```{r}
+dplyr::count(x, site_id)
+```
+We can also read the same data in, but this time request a spatial `sf` objects, where each row's `x` and `y` coordinates are transformed into spatial [POINT](https://r-spatial.github.io/sf/articles/sf1.html#sfg-simple-feature-geometry).
+
+```{r}
+x = read_guppy(gup_files, form = "sf") |>
+  print()
+```
+
+:::{.callout-note}
+Whether you request a tibble (aka table or data.frame) or an sf object, you can use all of the [tidyverse](https://www.tidyverse.org/) tools for subsequent analyses.  If you do your work with spatial analyses in mind, then [sf](https://r-spatial.github.io/sf/index.html) is the way to go.
+:::
+
+### A closer look
+
+But how does the function work?  How does it merge the metadata file with the tabular data?
+
+The process is the same if you provide one filename or many filenames.  We have written the [read_guppy() function](functions/guppy.R#L36) with the comments you see below in the pseudo-code,
+where each commetn is flagged with a double hash `##`.  You can study the code alongside the 
+comments to follow along.
+
+```
+for each filename
+  check that the file at filename exists
+  use string processing to "make" the companion medatdata filename
+  read the metadata
+    check that the metadata file exists
+    read the metadata as a YAML file
+    return the metadata
+  scan all of the text lines in the filename
+    parse the header extracting the bits of info we want
+    read the table directly from the text
+    mutate the the table to include columns of data from the metadata and the header
+  add the crs info as an attribute
+  return the table
+  
+bind all of the tables by row
+
+convert to sf-object if the user so requests
+
+return the table/sf-object
+```
+
+:::{.callout-tip}
+Reading and binding tables is such a common task it is well worth learning how to write your own functions rather than waiting for a solution to appear online. Once you have done one or two of these it gets to be **very** easy to do more as you combine little bites into a whole sandwich.
+:::
+

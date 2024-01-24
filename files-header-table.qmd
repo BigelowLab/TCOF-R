@@ -26,7 +26,7 @@ id,treatment,count,dose
 18,E,60,0.8
 ```
 
-Now whe have table readers galore to chose among including `read.csv` and `reader::read_csv`.  Each includes a `skip` argument to skip over the header which we can use to read the table alone.
+Now we have table readers galore to chose among including `read.csv` and `reader::read_csv`.  Each includes a `skip` argument to skip over the header which we can use to read the table alone.
 
 ### Read the table
 
