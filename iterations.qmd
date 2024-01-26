@@ -3,15 +3,15 @@ title: "Iterations"
 format: html
 ---
 
-Iteration - just what the heck is it really?  The word comes from the Latin 'iterare' which means to repeat. Computer programs are perfect for doing repetitious things which releases the coder from mundane tasks so we can spend more time checking the internet. But they do have an initial cost - somebody has to code up the iteration.  That's what this tutorial is about - how to code up iterations.
+Iteration - just what the heck is it really? The word comes from the Latin 'iterare' which means to repeat. Computer programs are perfect for doing repetitious things which releases the coder from mundane tasks so we can spend more time checking the internet. But they do have an initial cost - somebody has to code up the iteration. That's what this tutorial is about: how to code up iterations.
 
-The most famous iteration framework is the **for-loop**, but it has cousins in the **repeat-until** and **while-do** constructs.  R-language has additional tools built in for iterating.  These are the **apply** family including `lappy`, `sapply`, `mapply`, `tapply` and `vapply`.  Third party packages, such as those from [Tidyverse](https://www.tidyverse.org/) and [data.table](https://rdatatable.gitlab.io/data.table/) also provide tools for iteration. 
+The most famous iteration framework is the **for-loop**, but it has cousins in the **repeat-until** and **while-do** constructs. R-language has additional tools built in for iterating. These are in the **apply** family including `lappy`, `sapply`, `mapply`, `tapply` and `vapply`. Third party packages, such as those from [Tidyverse](https://www.tidyverse.org/) and [data.table](https://rdatatable.gitlab.io/data.table/) also provide tools for iteration.
 
 ## The for-loop
 
 The for-loop has a very simple design...
 
-```default
+``` default
 for (each of these-things){
   do this
 }
@@ -19,11 +19,11 @@ for (each of these-things){
 
 Technically, we don't need to add the curly-braced code block, it could be simply...
 
-```default
+``` default
 for (each of these-things) do this
 ```
 
-... but it is always better to err on the side of readability - and a code block is simply easier to read than a one-liner.  
+... but it is always better to err on the side of readability - a code block is simply easier to read than a one-liner.
 
 ### Some example data
 
@@ -35,11 +35,11 @@ x = c(A = "Alan", B = "Beryl", C = "Carlos")
 
 ### How to iterate over `these-things`
 
-What goes into the `(each of these-things)`? You have three choices here: a positional index (1,2,3), a name (A, B C) or the items itself.  Each time the loop runs, it selects one item from your `these-things` and "delivers" it into the code block.  
+What goes into the `(each of these-things)`? You have three choices here: a positional index (1,2,3), a name (A, B, C) or the items themselves (Alan, Beryl, Carlos). Each time the loop runs, it selects one item from your `these-things` and "delivers" it into the code block.
 
 #### Iterate by position
 
-Here's an example using positional indices.  Note that we chose to use `seq_along(x)` to generate our sequence: `r seq_along(x)`.  Using `seq_along(x)` and `seq_len(length(x))` are considered good practice because they will **not** throw an error if you happen to have an `x` with no elements (it happens!) and instead will skip the loop.
+Here's an example using positional indices. Note that we chose to use `seq_along(x)` to generate our sequence: `r seq_along(x)`. Using `seq_along(x)` and `seq_len(length(x))` are considered good practice because they will **not** throw an error if you happen to have an `x` with no elements (it happens!) and instead will skip the loop. In our case, we generate our sequence with `seq_along(x)` which produces `r seq_along(x)`.
 
 ```{r}
 for (i in seq_along(x)){
@@ -47,7 +47,7 @@ for (i in seq_along(x)){
 }
 ```
 
-Using positional indices is often very useful, but keep in mind you can control the order of the sequence if you like.  Note here how we reverse the order.
+Using positional indices is often very useful, but keep in mind you can control the order of the sequence if you like. Note here how we reverse the order.
 
 ```{r}
 for (i in rev(seq_along(x))){
@@ -57,25 +57,25 @@ for (i in rev(seq_along(x))){
 
 #### Iterate by name
 
-Of course our object with three elements is a named vector.  So we could use the names to iterate.
+Of course our object with three elements is a named vector. So we could use the names to iterate.
 
 ```{r}
-for (name in names(x)){
-  cat("Your name is", x[[name]], "and your letter is", name, "\n")
+for (letter in names(x)){
+  cat("Your name is", x[[letter]], "and your letter is", letter, "\n")
 }
 ```
 
 Here, too, you may arrange the order as you please.
+
 ```{r}
-for (name in c("B", "A", "C")){
-  cat("Your name is", x[[name]], "and your letter is", name, "\n")
+for (letter in c("B", "A", "C")){
+  cat("Your name is", x[[letter]], "and your letter is", letter, "\n")
 }
 ```
 
-:::{.callout-warning}
-Is your vector or list unnamed?  What do you think will happen if you try to iterate by name?  WIll it throw an error?  Or skip the loop?
+::: callout-warning
+Is your vector or list unnamed? What do you think will happen if you try to iterate by name? Will it throw an error? Skip the loop? Burst into flames and delete your hard drive?
 :::
-
 
 #### Iterate by item
 
@@ -91,26 +91,27 @@ Note that iterating by item means we lose the context of order - we don't know i
 
 ## Iteration with `lapply` and `sapply`
 
-`lapply` and `sapply` are very similar functions.  Each accepts a multi-element object over which it iterates.  At each iteration is **applies** a function of your choosing to the current element.  Once again, we can iterate over positional indices, names (if any) or over the items themselves. 
+`lapply` and `sapply` are very similar functions. Each accepts a multi-element object over which it iterates. At each iteration it **applies** a function of your choosing to the current element. This function you choose mustr accept one argument. Once again, we can iterate over positional indices, names (if any) or over the items themselves.
 
-Unlike for-loops, the `*apply` (where `*` is "l", "s", etc) functions actually return something to you, which opens up all sorts of programming possibilities. Here's a bit of pseudo-code using a generic `*apply`.  The value of result will hold one `modified-thing` for every element of `these-things`.
+Unlike for-loops, the `*apply` (where `*` is "l", "s", etc) functions [actually return something]{.underline} to you, which opens up all sorts of programming possibilities. Here's a bit of pseudo-code using a generic `*apply`. The value of result will hold one `modified_thing` for every element of `these_things`.
 
 ```default
-result = *apply(these-things,
-                function(this-thing){
-                  modified-thing) = do_something(this-thing))
-                  return(modified-thing))
+result = *apply(these_things,
+                function(this_thing){
+                  modified_thing = do_something(this_thing)
+                  return(modified_thing))
                 })
 ```
 
-### `lapply()` 
+### `lapply()`
 
-Let's try it iterating over names in our example data.
+Let's try it by iterating over names in our example data.
 
 ```{r}
 result = lapply(names(x),
                 function(name){
-                  r = paste("Your name is", x[[name]], "and your name has", nchar(x[[name]]), "characters", sep = " ")
+                  r = paste("Your name is", x[[name]], "and your name has", 
+                            nchar(x[[name]]), "characters", sep = " ")
                   return(r)
                 })
 ```
@@ -133,19 +134,20 @@ What are those things?
 print(result)
 ```
 
-The function used doesn't have to be built on the fly (which we call an anonymous or unnamed function), but could be any function listed only by name.  This makes it look a bit weird to the untrained eye.  But as long as the function accepts one argument, R will deliver that argument for you. Below we used a prevously defined function, `nchar()`, as an example.  Note that we switch to iterating over the elements rather than the names of the elements.
+The function used doesn't have to be constructed on the fly (which we call an anonymous or unnamed function), but could be any function listed only by name. This makes it look a bit weird to the untrained eye. But as long as the function accepts one argument, R will deliver that argument for you. Below we used a previously defined function, `nchar()`, as an example. Note that we switch to iterating over the elements rather than the names of the elements.
 
 ```{r}
 result = lapply(x, nchar)
 print(result)
 ```
-That seems to work, but how did the result get the names `A`, `B` and `C` while it didn't before?  The difference is that R tries hard to be useful.  When you iterate over a named listing, R will transfer those names to the resulting output (very helpful!)
 
-So, `lapply` produces a list.  What about `sapply()`?
+That seems to work, but how did the result get the names `A`, `B` and `C` while it didn't before? Result naming happens because R tries hard to be useful. When you iterate over a named listing, R will transfer those names to the resulting output (very helpful!)
+
+So, `lapply` produces a list. What about `sapply()`?
 
 ### `sapply()`
 
-`sapply()` operates just like `lapply()` except it tries very hard to simplify the output into a vector, another list or matrix if possible.
+`sapply()` operates just like `lapply()` except it tries very hard to simplify the output into a vector or matrix if possible. If R can't figure out how to simplify the output, then it will likely return a list.
 
 ```{r}
 result = sapply(x, nchar)
@@ -179,8 +181,7 @@ You can suppress the the simplification to make `sapply` just like `lapply`.
 result = sapply(x, nchar, simplify = FALSE) |>
   print()
 ```
-
-So, `sapply` can produce a simple vector, but it can also produce a list.  What about producing a matrix?  And do you even what that? (Answer: sometimes!)  A matrix is produced when the function produces a vector of more than one element.  Below we define an anonymous function that returns a two element vector (name and value).  Note that we are now iterating over the names of `x` rather than the elements of x.
+So, `sapply` can produce a simple vector, but it can also produce a list. What about producing a matrix? And do you even want that? (Answer: sometimes!) A matrix is produced when the function produces a vector of more than one element. Below we define an anonymous function that returns a two element vector (name and value). Note that we are now iterating over the names of `x` rather than the elements of x.
 
 ```{r}
 result = sapply(names(x), 
@@ -194,75 +195,86 @@ Let's query the output...
 ```{r}
 str(result)
 ```
+
 Well, there we go, a 2-row, 3-column matrix.
 
 ```{r}
 print(result)
 ```
 
-:::{.callout-tip}
-If you are like most mortals you may be disappointed that the matrix looks sideways.  It feels like it should be a column of names (A, B and C) followed by a column of items (Alan, Beryl and Carlos) rather than a row of each. You can switch things to make it look righter using the matrix transpose function `t()`.
+::: callout-tip
+If you are like most mortals you may be disappointed that the matrix looks sideways. It feels like it should be a column of names (A, B and C) followed by a column of items (Alan, Beryl and Carlos) rather than a row of each. You can switch things to make it look righter using the matrix transpose function `t()`.
 
 ```{r}
 t(result)
 ```
+
 That feels better somehow.
 :::
 
 ## Groups in a table
 
-It is very common to have a flat table (data.frame) where rows are grouped, not in contiguous rows perhaps, but by a common value in a particular column.  In fact, you may have the need to have multiple groupings - nested groups, where we first group by "this" and then within each of those groups we group by "that".  There's no limited on how many nested groups you might envision in a table.  The [dplyr package](https://dplyr.tidyverse.org/) and friends provide easy utilities for iterating over these groups.  In this case, the process is loosely described as mapping a portion of a table (a group) to a function.  THere are a couple of these utilities, but we'll focus on `group_map()`.
-
+It is very common to have a flat table (data.frame) where rows are grouped, not in contiguous rows perhaps, but by a common value in a particular column. In fact, you may have the need to have multiple groupings - nested groups, where we first group by "this" and then within each of those groups we group by "that". There's no limited on how many nested groups you might envision in a table. The [dplyr package](https://dplyr.tidyverse.org/) and friends provide easy utilities for iterating over these groups. In this case, the process is loosely described as mapping a portion of a table (a group) to a function. There are a number of these utilities, but we'll focus on `group_map()`.
 
 ### An example table
 
-We have created a function that produces a table in [E pluribus unum](files-many.qmd).  It's synthetic data about a study on fictitious guppies. 
- 
+We have created a function that produces a table in the [E pluribus unum](files-many.qmd) tutorial. The table is synthetic data about a study on fictitious guppies.
+
 ```{r}
 source("setup.R")
 x = read_guppy() |>
-  dplyr::glimpse()
+  print()
 ```
 
 ### Set up the groups
 
-Let's do something very simple; "for each treatment-shade group, let's craft a table of the minimum and maximum doses, as well as the mean count."  Note that we use the same iterative language we used above, "for each thing do this", where in this case "thing" means treatment-shade group.
+Let's do something very simple; "for each treatment-shade group, let's craft a table of the minimum and maximum doses, as well as the mean count." Note that we use the same iterative language we used above, "for each thing do this", where in this case "thing" means treatment-shade group.
 
 First, let's see how many treatment groups we should expect.
 
 ```{r}
-dplyr::count(x, treatment, shade)
+ngroups = dplyr::count(x, treatment, shade) |>
+  print()
 ```
 
-OK, there are 19 treatment-shade groups so we should expect our summary table to have 19 rows (one for each treatment-shade group.)  This is good info to have to help check our work.
+OK, there are `r nrow(ngroups)` treatment-shade groups so we should expect our summary table to have `r nrow(ngroups)` rows (one for each treatment-shade group.) This is good info to have to help check our work.
 
 Next we assign to the table the identity of the grouping variable - that is, which column contains the treatment-shade identifiers
 
 ```{r}
-x = dplyr::group_by(x, treatment, shade)
+x = dplyr::group_by(x, treatment, shade) |>
+  print()
 ```
 
-We can access information about the groupings, including the names of the grouping variables...
+The only change here is that we see a notation, in the header, about the groupings. We can access information about the groupings, including the names of the grouping variables...
 
 ```{r}
 dplyr::groups(x)
 ```
+
 ... a table of the keys (the values of each group)...
+
 ```{r}
 dplyr::group_keys(x)
 ```
+
 ... or even a listing of the row numbers for each group...
+
 ```{r}
 dplyr::group_data(x)
 ```
 
-This is perfect!  Just what we might need to iterate over each grouping.  The first group (treatment = A, shade = 20) has three records which we find at rows 73, 74 and 75. Now we could simply iterate over each row of the `group_data(x)` output, fishing out the rows for each and then making our computations. But...
+This is perfect! Just what we might need to iterate over each grouping. The first group (treatment = A, shade = 20) has three records which we find at rows 73, 74 and 75. Now we could iterate over each row of the `group_data(x)` output, fishing out the rows for each and then making our computations. But...
 
-The [dplyr](https://dplyr.tidyverse.org/) provides a set of tools that perform much of what we have seen with `lapply()` and `sapply()` - running an iterator, applying a function and and returning something.  These functions are `group_map()`, `group_walk()` and `group_modify()`.  We'll focus only upon `group_map()`, but do check out the others.  Also, keep in mind there are hundreds of tutorials on the web that you can follow.
+The [dplyr](https://dplyr.tidyverse.org/) provides a set of tools that perform much of what we have seen with `lapply()` and `sapply()` - running an iterator, applying a function and returning something. These functions are `group_map()`, `group_walk()` and `group_modify()`. We'll focus only upon `group_map()`, but do check out the others. Also, keep in mind there are [hundreds of examples and tutorials](https://rseek.org/?q=group_map) on the web that you can follow.
 
-Just like with `lapply()` and `sapply()`, we need a function to operate upon each group. Unlike `lapply()` and `sapply()`, the function we use (or create) **must** accept two positional arguments.  The first, which we call `tbl` (short for table), contains the data for the group while the second, which we call `key` contains a tiny table of the key for that group.  In our example, the key for each iteration would be one row of the output of `group_keys(x)` that you see above.
+Just like with `lapply()` and `sapply()`, we need a function to operate upon each group. Unlike `lapply()` and `sapply()`, the function we use (or create) **must** accept two positional arguments. The first, which we call `tbl` (short for table), contains the data for the group while the second, which we call `key` contains a tiny table of the key for that group. In our example, the key for each iteration would be one row of the output of `group_keys(x)` that you see above.
 
-Here's a reminder of our goal: *"for each treatment-shade group, let's craft a table of the minimum and maximum doses, as well as the mean count."* Our function needs to compute the min and max doses, as well as the mean count.  Now `key` while be a little table with treatment and shade, we could simply mutate that, adding columns for `min_dose`, `max_dose` and `mean_count`.
+::: callout-note
+You can call those two arguments whatever you like.  We adopt `tbl` and `key` only as a convention that we like.  You can devise your own convention, or use different argument names every time (as long as your head doesn't explode.)
+:::
+
+Here's a reminder of our goal: *"for each treatment-shade group, let's craft a table of the minimum and maximum doses, as well as the mean count."* So, our function needs to compute the min and max doses, as well as the mean count. Now `key` will be a little table with treatment and shade, we could simply mutate that, adding columns for `min_dose`, `max_dose` and `mean_count`.  Of course, the actual data for `dose` and `count` will be in the first argument, `tbl`.
 
 ```{r}
 summarize_one_group = function(tbl, key){
@@ -274,7 +286,7 @@ summarize_one_group = function(tbl, key){
 }
 ```
 
-OK, so how do we use the function?  It's easy, much as you did for, say `lapply()`, you provide the thing to iterate over and the function to apply at each iteration.
+OK, so how do we use the function? It's easy, much as you did for, say `lapply()`, you provide the thing to iterate over and the function to apply at each iteration.
 
 ```{r}
 result = dplyr::group_map(x, summarize_one_group)
@@ -291,13 +303,15 @@ Let's look at just the first three items returned.
 ```{r}
 result[seq_len(3)]
 ```
+
 OK - so we got back 19 tables, well those are easy to bind into one table.
+
 ```{r}
 result = dplyr::bind_rows(result) |>
   print()
 ```
 
-Well, that was easy.  It's not unusual to compress these steps into one convenient workflow.
+Well, that was easy. It's not unusual to compress these steps into one convenient workflow.
 
 ```{r}
 result = dplyr::group_by(x, treatment, shade) |>

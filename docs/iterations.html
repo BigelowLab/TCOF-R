@@ -219,8 +219,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Iteration - just what the heck is it really? The word comes from the Latin ‘iterare’ which means to repeat. Computer programs are perfect for doing repetitious things which releases the coder from mundane tasks so we can spend more time checking the internet. But they do have an initial cost - somebody has to code up the iteration. That’s what this tutorial is about - how to code up iterations.</p>
-<p>The most famous iteration framework is the <strong>for-loop</strong>, but it has cousins in the <strong>repeat-until</strong> and <strong>while-do</strong> constructs. R-language has additional tools built in for iterating. These are the <strong>apply</strong> family including <code>lappy</code>, <code>sapply</code>, <code>mapply</code>, <code>tapply</code> and <code>vapply</code>. Third party packages, such as those from <a href="https://www.tidyverse.org/">Tidyverse</a> and <a href="https://rdatatable.gitlab.io/data.table/">data.table</a> also provide tools for iteration.</p>
+<p>Iteration - just what the heck is it really? The word comes from the Latin ‘iterare’ which means to repeat. Computer programs are perfect for doing repetitious things which releases the coder from mundane tasks so we can spend more time checking the internet. But they do have an initial cost - somebody has to code up the iteration. That’s what this tutorial is about: how to code up iterations.</p>
+<p>The most famous iteration framework is the <strong>for-loop</strong>, but it has cousins in the <strong>repeat-until</strong> and <strong>while-do</strong> constructs. R-language has additional tools built in for iterating. These are in the <strong>apply</strong> family including <code>lappy</code>, <code>sapply</code>, <code>mapply</code>, <code>tapply</code> and <code>vapply</code>. Third party packages, such as those from <a href="https://www.tidyverse.org/">Tidyverse</a> and <a href="https://rdatatable.gitlab.io/data.table/">data.table</a> also provide tools for iteration.</p>
 <section id="the-for-loop" class="level2">
 <h2 class="anchored" data-anchor-id="the-for-loop">The for-loop</h2>
 <p>The for-loop has a very simple design…</p>
@@ -229,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Technically, we don’t need to add the curly-braced code block, it could be simply…</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>for (each of these-things) do this</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>… but it is always better to err on the side of readability - and a code block is simply easier to read than a one-liner.</p>
+<p>… but it is always better to err on the side of readability - a code block is simply easier to read than a one-liner.</p>
 <section id="some-example-data" class="level3">
 <h3 class="anchored" data-anchor-id="some-example-data">Some example data</h3>
 <p>Let’s make a simple named vector to work with.</p>
@@ -239,10 +239,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="how-to-iterate-over-these-things" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-iterate-over-these-things">How to iterate over <code>these-things</code></h3>
-<p>What goes into the <code>(each of these-things)</code>? You have three choices here: a positional index (1,2,3), a name (A, B C) or the items itself. Each time the loop runs, it selects one item from your <code>these-things</code> and “delivers” it into the code block.</p>
+<p>What goes into the <code>(each of these-things)</code>? You have three choices here: a positional index (1,2,3), a name (A, B, C) or the items themselves (Alan, Beryl, Carlos). Each time the loop runs, it selects one item from your <code>these-things</code> and “delivers” it into the code block.</p>
 <section id="iterate-by-position" class="level4">
 <h4 class="anchored" data-anchor-id="iterate-by-position">Iterate by position</h4>
-<p>Here’s an example using positional indices. Note that we chose to use <code>seq_along(x)</code> to generate our sequence: 1, 2, 3. Using <code>seq_along(x)</code> and <code>seq_len(length(x))</code> are considered good practice because they will <strong>not</strong> throw an error if you happen to have an <code>x</code> with no elements (it happens!) and instead will skip the loop.</p>
+<p>Here’s an example using positional indices. Note that we chose to use <code>seq_along(x)</code> to generate our sequence: 1, 2, 3. Using <code>seq_along(x)</code> and <code>seq_len(length(x))</code> are considered good practice because they will <strong>not</strong> throw an error if you happen to have an <code>x</code> with no elements (it happens!) and instead will skip the loop. In our case, we generate our sequence with <code>seq_along(x)</code> which produces 1, 2, 3.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(x)){</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Hello,"</span>, x[i], <span class="st">"you are number"</span>, i, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
@@ -269,8 +269,8 @@ Hello, Alan you are number 1 </code></pre>
 <h4 class="anchored" data-anchor-id="iterate-by-name">Iterate by name</h4>
 <p>Of course our object with three elements is a named vector. So we could use the names to iterate.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> <span class="fu">names</span>(x)){</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Your name is"</span>, x[[name]], <span class="st">"and your letter is"</span>, name, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (letter <span class="cf">in</span> <span class="fu">names</span>(x)){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Your name is"</span>, x[[letter]], <span class="st">"and your letter is"</span>, letter, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Your name is Alan and your letter is A 
@@ -280,8 +280,8 @@ Your name is Carlos and your letter is C </code></pre>
 </div>
 <p>Here, too, you may arrange the order as you please.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span>)){</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Your name is"</span>, x[[name]], <span class="st">"and your letter is"</span>, name, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (letter <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span>)){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Your name is"</span>, x[[letter]], <span class="st">"and your letter is"</span>, letter, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Your name is Beryl and your letter is B 
@@ -299,7 +299,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Is your vector or list unnamed? What do you think will happen if you try to iterate by name? WIll it throw an error? Or skip the loop?</p>
+<p>Is your vector or list unnamed? What do you think will happen if you try to iterate by name? Will it throw an error? Skip the loop? Burst into flames and delete your hard drive?</p>
 </div>
 </div>
 </section>
@@ -322,22 +322,23 @@ Hi there, Carlos I don't know your letter or position</code></pre>
 </section>
 <section id="iteration-with-lapply-and-sapply" class="level2">
 <h2 class="anchored" data-anchor-id="iteration-with-lapply-and-sapply">Iteration with <code>lapply</code> and <code>sapply</code></h2>
-<p><code>lapply</code> and <code>sapply</code> are very similar functions. Each accepts a multi-element object over which it iterates. At each iteration is <strong>applies</strong> a function of your choosing to the current element. Once again, we can iterate over positional indices, names (if any) or over the items themselves.</p>
-<p>Unlike for-loops, the <code>*apply</code> (where <code>*</code> is “l”, “s”, etc) functions actually return something to you, which opens up all sorts of programming possibilities. Here’s a bit of pseudo-code using a generic <code>*apply</code>. The value of result will hold one <code>modified-thing</code> for every element of <code>these-things</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>result = *apply(these-things,</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                function(this-thing){</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                  modified-thing) = do_something(this-thing))</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                  return(modified-thing))</span>
+<p><code>lapply</code> and <code>sapply</code> are very similar functions. Each accepts a multi-element object over which it iterates. At each iteration it <strong>applies</strong> a function of your choosing to the current element. This function you choose mustr accept one argument. Once again, we can iterate over positional indices, names (if any) or over the items themselves.</p>
+<p>Unlike for-loops, the <code>*apply</code> (where <code>*</code> is “l”, “s”, etc) functions <u>actually return something</u> to you, which opens up all sorts of programming possibilities. Here’s a bit of pseudo-code using a generic <code>*apply</code>. The value of result will hold one <code>modified_thing</code> for every element of <code>these_things</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>result = *apply(these_things,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                function(this_thing){</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                  modified_thing = do_something(this_thing)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                  return(modified_thing))</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="lapply" class="level3">
 <h3 class="anchored" data-anchor-id="lapply"><code>lapply()</code></h3>
-<p>Let’s try it iterating over names in our example data.</p>
+<p>Let’s try it by iterating over names in our example data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lapply</span>(<span class="fu">names</span>(x),</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                <span class="cf">function</span>(name){</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                  r <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"Your name is"</span>, x[[name]], <span class="st">"and your name has"</span>, <span class="fu">nchar</span>(x[[name]]), <span class="st">"characters"</span>, <span class="at">sep =</span> <span class="st">" "</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">return</span>(r)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                  r <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"Your name is"</span>, x[[name]], <span class="st">"and your name has"</span>, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">nchar</span>(x[[name]]), <span class="st">"characters"</span>, <span class="at">sep =</span> <span class="st">" "</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">return</span>(r)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>So what is in <code>result</code>?</p>
 <div class="cell">
@@ -367,7 +368,7 @@ Hi there, Carlos I don't know your letter or position</code></pre>
 [1] "Your name is Carlos and your name has 6 characters"</code></pre>
 </div>
 </div>
-<p>The function used doesn’t have to be built on the fly (which we call an anonymous or unnamed function), but could be any function listed only by name. This makes it look a bit weird to the untrained eye. But as long as the function accepts one argument, R will deliver that argument for you. Below we used a prevously defined function, <code>nchar()</code>, as an example. Note that we switch to iterating over the elements rather than the names of the elements.</p>
+<p>The function used doesn’t have to be constructed on the fly (which we call an anonymous or unnamed function), but could be any function listed only by name. This makes it look a bit weird to the untrained eye. But as long as the function accepts one argument, R will deliver that argument for you. Below we used a previously defined function, <code>nchar()</code>, as an example. Note that we switch to iterating over the elements rather than the names of the elements.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">lapply</span>(x, nchar)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -382,12 +383,12 @@ $C
 [1] 6</code></pre>
 </div>
 </div>
-<p>That seems to work, but how did the result get the names <code>A</code>, <code>B</code> and <code>C</code> while it didn’t before? The difference is that R tries hard to be useful. When you iterate over a named listing, R will transfer those names to the resulting output (very helpful!)</p>
+<p>That seems to work, but how did the result get the names <code>A</code>, <code>B</code> and <code>C</code> while it didn’t before? Result naming happens because R tries hard to be useful. When you iterate over a named listing, R will transfer those names to the resulting output (very helpful!)</p>
 <p>So, <code>lapply</code> produces a list. What about <code>sapply()</code>?</p>
 </section>
 <section id="sapply" class="level3">
 <h3 class="anchored" data-anchor-id="sapply"><code>sapply()</code></h3>
-<p><code>sapply()</code> operates just like <code>lapply()</code> except it tries very hard to simplify the output into a vector, another list or matrix if possible.</p>
+<p><code>sapply()</code> operates just like <code>lapply()</code> except it tries very hard to simplify the output into a vector or matrix if possible. If R can’t figure out how to simplify the output, then it will likely return a list.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">sapply</span>(x, nchar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -430,7 +431,7 @@ $C
 [1] 6</code></pre>
 </div>
 </div>
-<p>So, <code>sapply</code> can produce a simple vector, but it can also produce a list. What about producing a matrix? And do you even what that? (Answer: sometimes!) A matrix is produced when the function produces a vector of more than one element. Below we define an anonymous function that returns a two element vector (name and value). Note that we are now iterating over the names of <code>x</code> rather than the elements of x.</p>
+<p>So, <code>sapply</code> can produce a simple vector, but it can also produce a list. What about producing a matrix? And do you even want that? (Answer: sometimes!) A matrix is produced when the function produces a vector of more than one element. Below we define an anonymous function that returns a two element vector (name and value). Note that we are now iterating over the names of <code>x</code> rather than the elements of x.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">sapply</span>(<span class="fu">names</span>(x), </span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                <span class="cf">function</span>(name){</span>
@@ -483,31 +484,33 @@ C "C"  "Carlos"</code></pre>
 </section>
 <section id="groups-in-a-table" class="level2">
 <h2 class="anchored" data-anchor-id="groups-in-a-table">Groups in a table</h2>
-<p>It is very common to have a flat table (data.frame) where rows are grouped, not in contiguous rows perhaps, but by a common value in a particular column. In fact, you may have the need to have multiple groupings - nested groups, where we first group by “this” and then within each of those groups we group by “that”. There’s no limited on how many nested groups you might envision in a table. The <a href="https://dplyr.tidyverse.org/">dplyr package</a> and friends provide easy utilities for iterating over these groups. In this case, the process is loosely described as mapping a portion of a table (a group) to a function. THere are a couple of these utilities, but we’ll focus on <code>group_map()</code>.</p>
+<p>It is very common to have a flat table (data.frame) where rows are grouped, not in contiguous rows perhaps, but by a common value in a particular column. In fact, you may have the need to have multiple groupings - nested groups, where we first group by “this” and then within each of those groups we group by “that”. There’s no limited on how many nested groups you might envision in a table. The <a href="https://dplyr.tidyverse.org/">dplyr package</a> and friends provide easy utilities for iterating over these groups. In this case, the process is loosely described as mapping a portion of a table (a group) to a function. There are a number of these utilities, but we’ll focus on <code>group_map()</code>.</p>
 <section id="an-example-table" class="level3">
 <h3 class="anchored" data-anchor-id="an-example-table">An example table</h3>
-<p>We have created a function that produces a table in <a href="./files-many.html">E pluribus unum</a>. It’s synthetic data about a study on fictitious guppies.</p>
+<p>We have created a function that produces a table in the <a href="./files-many.html">E pluribus unum</a> tutorial. The table is synthetic data about a study on fictitious guppies.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>here() starts at /Users/ben/Library/CloudStorage/Dropbox/code/projects/TCOF-R</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">read_guppy</span>() <span class="sc">|&gt;</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 105
-Columns: 11
-$ site_id    &lt;chr&gt; "site_01", "site_01", "site_01", "site_01", "site_01", "sit…
-$ x          &lt;dbl&gt; 452032.1, 452032.1, 452032.1, 452032.1, 452032.1, 452032.1,…
-$ y          &lt;dbl&gt; 4857765, 4857765, 4857765, 4857765, 4857765, 4857765, 48577…
-$ time       &lt;dttm&gt; 2020-05-16 07:26:25, 2020-05-16 07:26:25, 2020-05-16 07:26…
-$ researcher &lt;chr&gt; "JPO", "JPO", "JPO", "JPO", "JPO", "JPO", "JPO", "JPO", "JP…
-$ shade      &lt;dbl&gt; 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,…
-$ gps_codes  &lt;chr&gt; "c-q-q", "c-q-q", "c-q-q", "c-q-q", "c-q-q", "c-q-q", "c-q-…
-$ id         &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, …
-$ treatment  &lt;chr&gt; "C", "B", "D", "C", "C", "A", "B", "B", "A", "B", "B", "A",…
-$ count      &lt;dbl&gt; 32, 71, 54, 57, 32, 55, 66, 61, 60, 33, 67, 34, 42, 60, 49,…
-$ dose       &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 0.9,…</code></pre>
+<pre><code># A tibble: 105 × 11
+   site_id       x        y time                researcher shade gps_codes    id
+   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+ 1 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         1
+ 2 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         2
+ 3 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         3
+ 4 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         4
+ 5 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         5
+ 6 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         6
+ 7 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         7
+ 8 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         8
+ 9 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         9
+10 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q        10
+# ℹ 95 more rows
+# ℹ 3 more variables: treatment &lt;chr&gt;, count &lt;dbl&gt;, dose &lt;dbl&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -516,7 +519,8 @@ $ dose       &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 
 <p>Let’s do something very simple; “for each treatment-shade group, let’s craft a table of the minimum and maximum doses, as well as the mean count.” Note that we use the same iterative language we used above, “for each thing do this”, where in this case “thing” means treatment-shade group.</p>
 <p>First, let’s see how many treatment groups we should expect.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(x, treatment, shade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>ngroups <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">count</span>(x, treatment, shade) <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 3
    treatment shade     n
@@ -545,11 +549,30 @@ $ dose       &lt;dbl&gt; 0.7, 0.5, 0.6, 0.7, 1.0, 0.4, 0.0, 0.0, 0.6, 0.4, 0.0, 
 <p>OK, there are 19 treatment-shade groups so we should expect our summary table to have 19 rows (one for each treatment-shade group.) This is good info to have to help check our work.</p>
 <p>Next we assign to the table the identity of the grouping variable - that is, which column contains the treatment-shade identifiers</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(x, treatment, shade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(x, treatment, shade) <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 105 × 11
+# Groups:   treatment, shade [19]
+   site_id       x        y time                researcher shade gps_codes    id
+   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+ 1 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         1
+ 2 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         2
+ 3 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         3
+ 4 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         4
+ 5 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         5
+ 6 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         6
+ 7 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         7
+ 8 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         8
+ 9 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q         9
+10 site_01 452032. 4857765. 2020-05-16 07:26:25 JPO           30 c-q-q        10
+# ℹ 95 more rows
+# ℹ 3 more variables: treatment &lt;chr&gt;, count &lt;dbl&gt;, dose &lt;dbl&gt;</code></pre>
 </div>
-<p>We can access information about the groupings, including the names of the grouping variables…</p>
+</div>
+<p>The only change here is that we see a notation, in the header, about the groupings. We can access information about the groupings, including the names of the grouping variables…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">groups</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">groups</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 treatment
@@ -560,7 +583,7 @@ shade</code></pre>
 </div>
 <p>… a table of the keys (the values of each group)…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">group_keys</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">group_keys</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 2
    treatment shade
@@ -588,7 +611,7 @@ shade</code></pre>
 </div>
 <p>… or even a listing of the row numbers for each group…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">group_data</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">group_data</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 3
    treatment shade       .rows
@@ -614,33 +637,46 @@ shade</code></pre>
 19 E            50        [10]</code></pre>
 </div>
 </div>
-<p>This is perfect! Just what we might need to iterate over each grouping. The first group (treatment = A, shade = 20) has three records which we find at rows 73, 74 and 75. Now we could simply iterate over each row of the <code>group_data(x)</code> output, fishing out the rows for each and then making our computations. But…</p>
-<p>The <a href="https://dplyr.tidyverse.org/">dplyr</a> provides a set of tools that perform much of what we have seen with <code>lapply()</code> and <code>sapply()</code> - running an iterator, applying a function and and returning something. These functions are <code>group_map()</code>, <code>group_walk()</code> and <code>group_modify()</code>. We’ll focus only upon <code>group_map()</code>, but do check out the others. Also, keep in mind there are hundreds of tutorials on the web that you can follow.</p>
+<p>This is perfect! Just what we might need to iterate over each grouping. The first group (treatment = A, shade = 20) has three records which we find at rows 73, 74 and 75. Now we could iterate over each row of the <code>group_data(x)</code> output, fishing out the rows for each and then making our computations. But…</p>
+<p>The <a href="https://dplyr.tidyverse.org/">dplyr</a> provides a set of tools that perform much of what we have seen with <code>lapply()</code> and <code>sapply()</code> - running an iterator, applying a function and returning something. These functions are <code>group_map()</code>, <code>group_walk()</code> and <code>group_modify()</code>. We’ll focus only upon <code>group_map()</code>, but do check out the others. Also, keep in mind there are <a href="https://rseek.org/?q=group_map">hundreds of examples and tutorials</a> on the web that you can follow.</p>
 <p>Just like with <code>lapply()</code> and <code>sapply()</code>, we need a function to operate upon each group. Unlike <code>lapply()</code> and <code>sapply()</code>, the function we use (or create) <strong>must</strong> accept two positional arguments. The first, which we call <code>tbl</code> (short for table), contains the data for the group while the second, which we call <code>key</code> contains a tiny table of the key for that group. In our example, the key for each iteration would be one row of the output of <code>group_keys(x)</code> that you see above.</p>
-<p>Here’s a reminder of our goal: <em>“for each treatment-shade group, let’s craft a table of the minimum and maximum doses, as well as the mean count.”</em> Our function needs to compute the min and max doses, as well as the mean count. Now <code>key</code> while be a little table with treatment and shade, we could simply mutate that, adding columns for <code>min_dose</code>, <code>max_dose</code> and <code>mean_count</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can call those two arguments whatever you like. We adopt <code>tbl</code> and <code>key</code> only as a convention that we like. You can devise your own convention, or use different argument names every time (as long as your head doesn’t explode.)</p>
+</div>
+</div>
+<p>Here’s a reminder of our goal: <em>“for each treatment-shade group, let’s craft a table of the minimum and maximum doses, as well as the mean count.”</em> So, our function needs to compute the min and max doses, as well as the mean count. Now <code>key</code> will be a little table with treatment and shade, we could simply mutate that, adding columns for <code>min_dose</code>, <code>max_dose</code> and <code>mean_count</code>. Of course, the actual data for <code>dose</code> and <code>count</code> will be in the first argument, <code>tbl</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>summarize_one_group <span class="ot">=</span> <span class="cf">function</span>(tbl, key){</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">=</span> key <span class="sc">|&gt;</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">min_dose =</span> <span class="fu">min</span>(tbl<span class="sc">$</span>dose),</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max_dose =</span> <span class="fu">max</span>(tbl<span class="sc">$</span>dose),</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">mean_count =</span> <span class="fu">mean</span>(tbl<span class="sc">$</span>count))</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(key)</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>summarize_one_group <span class="ot">=</span> <span class="cf">function</span>(tbl, key){</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">=</span> key <span class="sc">|&gt;</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">min_dose =</span> <span class="fu">min</span>(tbl<span class="sc">$</span>dose),</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max_dose =</span> <span class="fu">max</span>(tbl<span class="sc">$</span>dose),</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">mean_count =</span> <span class="fu">mean</span>(tbl<span class="sc">$</span>count))</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(key)</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>OK, so how do we use the function? It’s easy, much as you did for, say <code>lapply()</code>, you provide the thing to iterate over and the function to apply at each iteration.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">group_map</span>(x, summarize_one_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">group_map</span>(x, summarize_one_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>But what is in the result? (Hopefully 19!)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(result) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(result) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 19</code></pre>
 </div>
 </div>
 <p>Let’s look at just the first three items returned.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>result[<span class="fu">seq_len</span>(<span class="dv">3</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>result[<span class="fu">seq_len</span>(<span class="dv">3</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 1 × 5
@@ -663,8 +699,8 @@ shade</code></pre>
 </div>
 <p>OK - so we got back 19 tables, well those are easy to bind into one table.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(result) <span class="sc">|&gt;</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(result) <span class="sc">|&gt;</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 5
    treatment shade min_dose max_dose mean_count
@@ -692,10 +728,10 @@ shade</code></pre>
 </div>
 <p>Well, that was easy. It’s not unusual to compress these steps into one convenient workflow.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(x, treatment, shade) <span class="sc">|&gt;</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_map</span>(summarize_one_group) <span class="sc">|&gt;</span></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>() <span class="sc">|&gt;</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(x, treatment, shade) <span class="sc">|&gt;</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_map</span>(summarize_one_group) <span class="sc">|&gt;</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>() <span class="sc">|&gt;</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 5
    treatment shade min_dose max_dose mean_count
