@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Coding at the Tandy Center for Ocean Forecasting - Configuration files</title>
+<title>Coding at the Tandy Center for Ocean Forecasting - Tables - math</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./files-configurations.html">Configuration files</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tables-math.html">Table math</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -146,7 +146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./files-configurations.html" class="sidebar-item-text sidebar-link active">
+  <a href="./files-configurations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Configuration files</span></a>
   </div>
 </li>
@@ -164,7 +164,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./tables-math.html" class="sidebar-item-text sidebar-link">
+  <a href="./tables-math.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Table math</span></a>
   </div>
 </li>
@@ -178,10 +178,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#an-example-configuration-file" id="toc-an-example-configuration-file" class="nav-link active" data-scroll-target="#an-example-configuration-file">An example configuration file</a></li>
-  <li><a href="#reading-a-configuration-file" id="toc-reading-a-configuration-file" class="nav-link" data-scroll-target="#reading-a-configuration-file">Reading a configuration file</a></li>
-  <li><a href="#modifying-a-configuration" id="toc-modifying-a-configuration" class="nav-link" data-scroll-target="#modifying-a-configuration">Modifying a configuration</a></li>
-  <li><a href="#writing-a-configuration-file" id="toc-writing-a-configuration-file" class="nav-link" data-scroll-target="#writing-a-configuration-file">Writing a configuration file</a></li>
+  <li><a href="#doing-math-with-columns-in-a-tibble" id="toc-doing-math-with-columns-in-a-tibble" class="nav-link active" data-scroll-target="#doing-math-with-columns-in-a-tibble">Doing math with columns in a tibble</a>
+  <ul class="collapse">
+  <li><a href="#using-rowwise" id="toc-using-rowwise" class="nav-link" data-scroll-target="#using-rowwise">Using <code>rowwise()</code></a></li>
+  <li><a href="#using-apply" id="toc-using-apply" class="nav-link" data-scroll-target="#using-apply">Using <code>apply()</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -190,7 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Configuration files</h1>
+<h1 class="title">Tables - math</h1>
 </div>
 
 
@@ -205,94 +206,130 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Many times we have a set of values used by a workflow that aren’t exactly data, but are values for parameters and arguments. These are typically stored in a <a href="https://en.wikipedia.org/wiki/Configuration_file">configuration file</a> which can come in a variety of standard formats. A common format is <a href="https://en.wikipedia.org/wiki/YAML">YAML</a> which is a name-value pairing written in plain text, and it is easy work with in R.</p>
-<section id="an-example-configuration-file" class="level2">
-<h2 class="anchored" data-anchor-id="an-example-configuration-file">An example configuration file</h2>
-<p><a href="data/guppy/site_01/site_01.yaml">Here</a> we have a small configuration file. It looks like this:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>site_id: site_01</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>researcher: JPO</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>time: 2020-05-16T07:26:25 UTC</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>shade: 30.0</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gps_codes:</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>- c</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>- q</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>- q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Most items have a simple name-value association such as <code>shade = 30.0</code>, while others have more complex associations like <code>gps_codes = c("c", "q", "q")</code>.</p>
-</section>
-<section id="reading-a-configuration-file" class="level2">
-<h2 class="anchored" data-anchor-id="reading-a-configuration-file">Reading a configuration file</h2>
-<p>The <a href="https://CRAN.R-project.org/package=yaml">yaml R package</a> will read and write YAML files. In R the contents of the file become a named list.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cfg <span class="ot">=</span> yaml<span class="sc">::</span><span class="fu">read_yaml</span>(<span class="st">"data/guppy/site_01/site_01.yaml"</span>) </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cfg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">tibble</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="doing-math-with-columns-in-a-tibble" class="level1">
+<h1>Doing math with columns in a tibble</h1>
+<p>Sometimes you want to do some math using columns of a tibble, like finding a sum for example.</p>
+<p>Let’s try to make a new column containing the sum of Sepal.Length and Sepal.Width</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z =</span> Sepal.Length<span class="sc">+</span>Sepal.Width, <span class="at">.after=</span>Sepal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>List of 5
- $ site_id   : chr "site_01"
- $ researcher: chr "JPO"
- $ time      : chr "2020-05-16T07:26:25 UTC"
- $ shade     : num 30
- $ gps_codes : chr [1:3] "c" "q" "q"</code></pre>
+<pre><code># A tibble: 150 × 6
+   Sepal.Length Sepal.Width     z Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1          5.1         3.5   8.6          1.4         0.2 setosa 
+ 2          4.9         3     7.9          1.4         0.2 setosa 
+ 3          4.7         3.2   7.9          1.3         0.2 setosa 
+ 4          4.6         3.1   7.7          1.5         0.2 setosa 
+ 5          5           3.6   8.6          1.4         0.2 setosa 
+ 6          5.4         3.9   9.3          1.7         0.4 setosa 
+ 7          4.6         3.4   8            1.4         0.3 setosa 
+ 8          5           3.4   8.4          1.5         0.2 setosa 
+ 9          4.4         2.9   7.3          1.4         0.2 setosa 
+10          4.9         3.1   8            1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
 </div>
 </div>
-<p>Note that items have been read as charcater (string) or number. Other data types are possibke but these two are the most common.</p>
-</section>
-<section id="modifying-a-configuration" class="level2">
-<h2 class="anchored" data-anchor-id="modifying-a-configuration">Modifying a configuration</h2>
-<p>You can update a value in the configuration. The following are all equivalent modifications.</p>
+<p>No problem, but if we want to wrap this step into a function and pass a vector of column names, we’ll need to think of another way:</p>
+<p>The <code>pick()</code> verb from dplyr allows us to supply a subset of columns to work on.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cfg<span class="sc">$</span>shade <span class="ot">=</span> <span class="fl">25.0</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cfg[[<span class="st">"shade"</span>]] <span class="ot">=</span> <span class="fl">25.0</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>cfg[[<span class="dv">4</span>]] <span class="ot">=</span> <span class="fl">25.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>You can add a name-value pairing.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cfg<span class="sc">$</span>alphabet <span class="ot">=</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cfg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z =</span> <span class="fu">sum</span>(<span class="fu">pick</span>(<span class="fu">all_of</span>(vars))), <span class="at">.after=</span>Sepal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>List of 6
- $ site_id   : chr "site_01"
- $ researcher: chr "JPO"
- $ time      : chr "2020-05-16T07:26:25 UTC"
- $ shade     : num 25
- $ gps_codes : chr [1:3] "c" "q" "q"
- $ alphabet  : chr [1:5] "a" "b" "c" "d" ...</code></pre>
+<pre><code># A tibble: 150 × 6
+   Sepal.Length Sepal.Width     z Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1          5.1         3.5 1335.          1.4         0.2 setosa 
+ 2          4.9         3   1335.          1.4         0.2 setosa 
+ 3          4.7         3.2 1335.          1.3         0.2 setosa 
+ 4          4.6         3.1 1335.          1.5         0.2 setosa 
+ 5          5           3.6 1335.          1.4         0.2 setosa 
+ 6          5.4         3.9 1335.          1.7         0.4 setosa 
+ 7          4.6         3.4 1335.          1.4         0.3 setosa 
+ 8          5           3.4 1335.          1.5         0.2 setosa 
+ 9          4.4         2.9 1335.          1.4         0.2 setosa 
+10          4.9         3.1 1335.          1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
 </div>
 </div>
-<p>And then you can remove an element.</p>
+<p>It looks like our new column z is a sum of both of the entire columns.</p>
+<section id="using-rowwise" class="level2">
+<h2 class="anchored" data-anchor-id="using-rowwise">Using <code>rowwise()</code></h2>
+<p>If we want a sum by row, we’ll need to use <code>rowwise()</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cfg<span class="sc">$</span>time <span class="ot">=</span> <span class="cn">NULL</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cfg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z =</span> <span class="fu">sum</span>(<span class="fu">pick</span>(<span class="fu">all_of</span>(vars))), <span class="at">.after=</span>Sepal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>List of 5
- $ site_id   : chr "site_01"
- $ researcher: chr "JPO"
- $ shade     : num 25
- $ gps_codes : chr [1:3] "c" "q" "q"
- $ alphabet  : chr [1:5] "a" "b" "c" "d" ...</code></pre>
+<pre><code># A tibble: 150 × 6
+# Rowwise: 
+   Sepal.Length Sepal.Width     z Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1          5.1         3.5   8.6          1.4         0.2 setosa 
+ 2          4.9         3     7.9          1.4         0.2 setosa 
+ 3          4.7         3.2   7.9          1.3         0.2 setosa 
+ 4          4.6         3.1   7.7          1.5         0.2 setosa 
+ 5          5           3.6   8.6          1.4         0.2 setosa 
+ 6          5.4         3.9   9.3          1.7         0.4 setosa 
+ 7          4.6         3.4   8            1.4         0.3 setosa 
+ 8          5           3.4   8.4          1.5         0.2 setosa 
+ 9          4.4         2.9   7.3          1.4         0.2 setosa 
+10          4.9         3.1   8            1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
 </div>
 </div>
+<p>It’s also now necessary to wrap your selection in <code>all_of()</code> or tidyselect will complain with a message like this one:</p>
+<pre><code>Warning message: There was 1 warning in `mutate()`. ℹ In argument: `z = sum(pick(vars))`. 
+
+Caused by warning: 
+
+! Using an external vector in selections was deprecated in tidyselect 1.1.0. 
+
+ℹ Please use `all_of()` or `any_of()` instead.
+
+\# Was: data %\&gt;% select(vars)
+
+\# Now: data %\&gt;% select(all_of(vars))
+
+See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</code></pre>
 </section>
-<section id="writing-a-configuration-file" class="level2">
-<h2 class="anchored" data-anchor-id="writing-a-configuration-file">Writing a configuration file</h2>
-<p>To write the configuration we can use the <a href="https://CRAN.R-project.org/package=yaml">yaml R package</a> again.</p>
+<section id="using-apply" class="level2">
+<h2 class="anchored" data-anchor-id="using-apply">Using <code>apply()</code></h2>
+<p>Another way of accomplishing the same task is using <code>apply()</code> to call <code>sum()</code> on each row.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>yaml<span class="sc">::</span><span class="fu">write_yaml</span>(cfg, <span class="st">"~/my_test_config.yaml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The easiest way to get a configuration going is to start a <em>named</em> list in R for your important items, and then save that to a YAML file. You can edit it as a text file to modify, add or remove elements.</p>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z =</span> <span class="fu">apply</span>(<span class="fu">pick</span>(<span class="fu">all_of</span>(vars)),<span class="dv">1</span>,sum),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">.after=</span>Sepal.Width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 6
+   Sepal.Length Sepal.Width     z Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1          5.1         3.5   8.6          1.4         0.2 setosa 
+ 2          4.9         3     7.9          1.4         0.2 setosa 
+ 3          4.7         3.2   7.9          1.3         0.2 setosa 
+ 4          4.6         3.1   7.7          1.5         0.2 setosa 
+ 5          5           3.6   8.6          1.4         0.2 setosa 
+ 6          5.4         3.9   9.3          1.7         0.4 setosa 
+ 7          4.6         3.4   8            1.4         0.3 setosa 
+ 8          5           3.4   8.4          1.5         0.2 setosa 
+ 9          4.4         2.9   7.3          1.4         0.2 setosa 
+10          4.9         3.1   8            1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

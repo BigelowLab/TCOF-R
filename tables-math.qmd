@@ -1,0 +1,77 @@
+---
+title: "Tables - math"
+format: html
+editor: visual
+---
+
+```{r message=FALSE}
+library(dplyr)
+```
+
+```{r}
+data("iris")
+
+x <- tibble(iris)
+```
+
+# Doing math with columns in a tibble
+
+Sometimes you want to do some math using columns of a tibble, like finding a sum for example.
+
+Let's try to make a new column containing the sum of Sepal.Length and Sepal.Width
+
+```{r}
+x |>
+  mutate(z = Sepal.Length+Sepal.Width, .after=Sepal.Width)
+```
+
+No problem, but if we want to wrap this step into a function and pass a vector of column names, we'll need to think of another way:
+
+The `pick()` verb from dplyr allows us to supply a subset of columns to work on.
+
+```{r}
+vars <- c("Sepal.Length", "Sepal.Width")
+
+x |>
+  mutate(z = sum(pick(all_of(vars))), .after=Sepal.Width)
+```
+
+It looks like our new column z is a sum of both of the entire columns.
+
+## Using `rowwise()`
+
+If we want a sum by row, we'll need to use `rowwise()`
+
+```{r}
+x |>
+  rowwise() |>
+  mutate(z = sum(pick(all_of(vars))), .after=Sepal.Width)
+```
+
+It's also now necessary to wrap your selection in `all_of()` or tidyselect will complain with a message like this one:
+
+```         
+Warning message: There was 1 warning in `mutate()`. ℹ In argument: `z = sum(pick(vars))`. 
+
+Caused by warning: 
+
+! Using an external vector in selections was deprecated in tidyselect 1.1.0. 
+
+ℹ Please use `all_of()` or `any_of()` instead.
+
+\# Was: data %\>% select(vars)
+
+\# Now: data %\>% select(all_of(vars))
+
+See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+```
+
+## Using `apply()`
+
+Another way of accomplishing the same task is using `apply()` to call `sum()` on each row.
+
+```{r}
+x |>
+  mutate(z = apply(pick(all_of(vars)),1,sum),
+         .after=Sepal.Width)
+```
