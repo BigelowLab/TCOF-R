@@ -8,6 +8,7 @@ project:
     - files-configurations.qmd
     - files-header-table.qmd
     - files-many.qmd
+    - tables-math.qmd
 website:
   title: "Coding at the Tandy Center for Ocean Forecasting"
   sidebar:
@@ -24,6 +25,8 @@ website:
         text: "Files with bad headers"
       - href: files-many.qmd
         text: "E pluribus unum"
+      - href: tables-math.qmd
+        text: "Table math"
       - about.qmd
 
 format:
