@@ -16,4 +16,6 @@ Here you'll find short tutorials on methods for transforming your coding by leve
 
 + [E pluribus unum](files-many.qmd) Have many tabular files you want to bind together as one big table?
 
++ [Table math](tables-math.qmd) If you want to do some math with columns in a table.
+
 
