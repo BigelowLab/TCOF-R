@@ -1,0 +1,47 @@
+---
+title: "Lists"
+---
+
+## Indexing a list in a chain of pipes
+
+Suppose we have a list, l, containing three lowercase characters
+
+```{r}
+l <- list("a", "b", "c")
+
+l
+```
+
+To index an element of the list, we can use double square brackets
+
+```{r}
+l[[1]]
+```
+
+If we want to index the same element as part of a chain of pipes, the new pipe operator (`|>`) won't cut it
+
+```{r}
+#| error: true
+l |> `[[`(1)
+```
+
+The old pipe (`%>%`) still works, but requires loading dplyr and doesn't look very elegant
+
+```{r message=FALSE}
+library(dplyr)
+l %>% `[[`(1)
+```
+
+Instead, we can use `getElement()`. Supply the list as the first argument, and the index as the second
+
+```{r}
+getElement(l, 1)
+```
+
+Here's an example of indexing the first element and making it upper case
+
+```{r}
+l |>
+  getElement(1) |>
+  toupper()
+```

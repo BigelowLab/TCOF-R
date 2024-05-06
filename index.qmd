@@ -18,4 +18,6 @@ Here you'll find short tutorials on methods for transforming your coding by leve
 
 + [Table math](tables-math.qmd) If you want to do some math with columns in a table.
 
++ [Lists](lists-indexing.qmd) How do you index an element of a list in a chain of pipes?
+
 

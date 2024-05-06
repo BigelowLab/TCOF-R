@@ -9,6 +9,7 @@ project:
     - files-header-table.qmd
     - files-many.qmd
     - tables-math.qmd
+    - lists-indexing.qmd
 website:
   title: "Coding at the Tandy Center for Ocean Forecasting"
   sidebar:
@@ -27,6 +28,8 @@ website:
         text: "E pluribus unum"
       - href: tables-math.qmd
         text: "Table math"
+      - href: lists-indexing.qmd
+        text: "Lists"
       - about.qmd
 
 format:
