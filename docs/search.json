@@ -154,7 +154,7 @@
     "href": "index.html",
     "title": "Home",
     "section": "",
-    "text": "Tandy Center for Ocean Forecasting\nHere you’ll find short tutorials on methods for transforming your coding by leveraging basic tools for capturing, organizing, accessing and analyzing your data. Use the side bar at left to navigate among various topics (some of which overlap.)\n\nIterations When you really want to repeat yourself repetitiously over and over.\nConfiguration files Sometimes you need to store metadata in a file - try YAML!\nFiles with bad headers Have a file that has a complicated header with information you want to extract along with the data?\nE pluribus unum Have many tabular files you want to bind together as one big table?\nTable math If you want to do some math with columns in a table.\nLists How do you index an element of a list in a chain of pipes?",
+    "text": "Tandy Center for Ocean Forecasting\nHere you’ll find short tutorials on methods for transforming your coding by leveraging basic tools for capturing, organizing, accessing and analyzing your data. Use the side bar at left to navigate among various topics (some of which overlap.)\n\nIterations When you really want to repeat yourself repetitiously over and over.\nError catching Catch and handle errors - especially in iterations.\nConfiguration files Sometimes you need to store metadata in a file - try YAML!\nFiles with bad headers Have a file that has a complicated header with information you want to extract along with the data?\nE pluribus unum Have many tabular files you want to bind together as one big table?\nTable math If you want to do some math with columns in a table.\nLists How do you index an element of a list in a chain of pipes?",
     "crumbs": [
       "Home"
     ]

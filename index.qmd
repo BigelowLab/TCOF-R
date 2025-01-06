@@ -6,18 +6,18 @@ execute:
 
 # [Tandy Center for Ocean Forecasting](https://www.bigelow.org/services/ocean-forecasting/)
 
-Here you'll find short tutorials on methods for transforming your coding by leveraging basic tools for capturing, organizing, accessing and analyzing your data. Use the side bar at left to navigate among various topics (some of which overlap.)  
+Here you'll find short tutorials on methods for transforming your coding by leveraging basic tools for capturing, organizing, accessing and analyzing your data. Use the side bar at left to navigate among various topics (some of which overlap.)
 
-+ [Iterations](iterations.qmd) When you really want to repeat yourself repetitiously over and over.
+-   [Iterations](iterations.qmd) When you really want to repeat yourself repetitiously over and over.
 
-+ [Configuration files](files-configurations.qmd) Sometimes you need to store metadata in a file - try YAML!
+-   [Error catching](try.qmd) Catch and handle errors - especially in iterations.
 
-+ [Files with bad headers](files-header-table.qmd) Have a file that has a complicated header with information you want to extract along with the data?
+-   [Configuration files](files-configurations.qmd) Sometimes you need to store metadata in a file - try YAML!
 
-+ [E pluribus unum](files-many.qmd) Have many tabular files you want to bind together as one big table?
+-   [Files with bad headers](files-header-table.qmd) Have a file that has a complicated header with information you want to extract along with the data?
 
-+ [Table math](tables-math.qmd) If you want to do some math with columns in a table.
+-   [E pluribus unum](files-many.qmd) Have many tabular files you want to bind together as one big table?
 
-+ [Lists](lists-indexing.qmd) How do you index an element of a list in a chain of pipes?
+-   [Table math](tables-math.qmd) If you want to do some math with columns in a table.
 
-
+-   [Lists](lists-indexing.qmd) How do you index an element of a list in a chain of pipes?
