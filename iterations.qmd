@@ -95,7 +95,7 @@ Note that iterating by item means we lose the context of order - we don't know i
 
 Unlike for-loops, the `*apply` (where `*` is "l", "s", etc) functions [actually return something]{.underline} to you, which opens up all sorts of programming possibilities. Here's a bit of pseudo-code using a generic `*apply`. The value of result will hold one `modified_thing` for every element of `these_things`.
 
-```default
+``` default
 result = *apply(these_things,
                 function(this_thing){
                   modified_thing = do_something(this_thing)
@@ -181,6 +181,7 @@ You can suppress the the simplification to make `sapply` just like `lapply`.
 result = sapply(x, nchar, simplify = FALSE) |>
   print()
 ```
+
 So, `sapply` can produce a simple vector, but it can also produce a list. What about producing a matrix? And do you even want that? (Answer: sometimes!) A matrix is produced when the function produces a vector of more than one element. Below we define an anonymous function that returns a two element vector (name and value). Note that we are now iterating over the names of `x` rather than the elements of x.
 
 ```{r}
@@ -271,10 +272,10 @@ The [dplyr](https://dplyr.tidyverse.org/) provides a set of tools that perform m
 Just like with `lapply()` and `sapply()`, we need a function to operate upon each group. Unlike `lapply()` and `sapply()`, the function we use (or create) **must** accept two positional arguments. The first, which we call `tbl` (short for table), contains the data for the group while the second, which we call `key` contains a tiny table of the key for that group. In our example, the key for each iteration would be one row of the output of `group_keys(x)` that you see above.
 
 ::: callout-note
-You can call those two arguments whatever you like.  We adopt `tbl` and `key` only as a convention that we like.  You can devise your own convention, or use different argument names every time (as long as your head doesn't explode.)
+You can call those two arguments whatever you like. We adopt `tbl` and `key` only as a convention that we like. You can devise your own convention, or use different argument names every time (as long as your head doesn't explode.)
 :::
 
-Here's a reminder of our goal: *"for each treatment-shade group, let's craft a table of the minimum and maximum doses, as well as the mean count."* So, our function needs to compute the min and max doses, as well as the mean count. Now `key` will be a little table with treatment and shade, we could simply mutate that, adding columns for `min_dose`, `max_dose` and `mean_count`.  Of course, the actual data for `dose` and `count` will be in the first argument, `tbl`.
+Here's a reminder of our goal: *"for each treatment-shade group, let's craft a table of the minimum and maximum doses, as well as the mean count."* So, our function needs to compute the min and max doses, as well as the mean count. Now `key` will be a little table with treatment and shade, we could simply mutate that, adding columns for `min_dose`, `max_dose` and `mean_count`. Of course, the actual data for `dose` and `count` will be in the first argument, `tbl`.
 
 ```{r}
 summarize_one_group = function(tbl, key){

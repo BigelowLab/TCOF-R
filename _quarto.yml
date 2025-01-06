@@ -5,6 +5,7 @@ project:
   render:
     - index.qmd
     - iterations.qmd
+    - try.qmd
     - files-configurations.qmd
     - files-header-table.qmd
     - files-many.qmd
@@ -20,6 +21,8 @@ website:
         text: Home
       - href: iterations.qmd
         text: "Iterations"
+      - href: try.qmd
+        text: "You're very trying"
       - href: files-configurations.qmd
         text: "Configuration files"
       - href: files-header-table.qmd
